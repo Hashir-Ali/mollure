@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins&display=swap');
+body{
+	font-family: 'Playfair Display', serif;
+}
+.flatpickr-day.selected {
+	color: #ffffff;
+	background-color: #66C68F;
+    border-radius: 30px;
+}
+.flatpickr-day:hover {
+	background: #66C68F;
+}
+.flatpickr-day.inRange {
+	color: #161616;
+	background-color: #66c68f96;
+}
+.bx--date-picker__input {
+	font-family: 'IBM Plex Mono', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Courier, monospace;
+	font-size: 0.875rem;
+	font-weight: 400;
+	line-height: 1.42857;
+	letter-spacing: 0.32px;
+	outline: 2px solid transparent;
+	outline-offset: -2px;
+	position: relative;
+	display: block;
+	height: 2.5rem;
+	padding: 0 1rem;
+	border: none;
+	/* border-bottom: 1px solid #8d8d8d; */
+	background-color: #f4f4f4;
+	color: #161616;
+	-webkit-transition: 70ms cubic-bezier(0.2, 0, 0.38, 0.9) all;
+	transition: 70ms cubic-bezier(0.2, 0, 0.38, 0.9) all;
+	background: none;
+    border: none;
+}
+.bx--date-picker--range{
+    background: #FFFFFF;
+    border: 1px solid #E4E4E4;
+    border-radius: 8px;
+}
+.bx--date-picker__input:focus, .bx--date-picker__input.bx--focused {
+	outline: 2px solid none !important;
+	outline-offset: 0px;
+}
+.bx--date-picker__input:focus, .bx--date-picker__input.bx--focused {
+	outline: 2px solid none;
+	outline-offset: -2px;
+}
+.bx--date-picker__input:focus, .bx--date-picker__input.bx--focused {
+	outline: 0px solid #0f63fe00 !important;
+	outline-offset: -2px;
+}
+.flatpickr-calendar.open {
+	-webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	z-index: 99999;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	width: 320px;
+	height: 18rem;
+	margin-top: -0.25rem;
+	padding: 0rem 0.25rem 1.5rem 0.25rem;
+	/* overflow: hidden; */
+	background: #FFFFFF;
+	border-radius: 12px;
+	border: none;
+}
+.flatpickr-day.today {
+	position: relative;
+	color: #000000;
+	font-weight: 600;
+}
+.flatpickr-day {
+	position: relative;
+	color: #000000;
+	font-weight: 600;
+}
+.flatpickr-day:focus {
+	outline: 0px solid #0f63fe00;
+	outline-offset: -2px;
+	outline-color: #0f63fe00;
+}
+.flatpickr-day.selected:focus {
+	outline: 0 solid #ffffff;
+	outline-offset: -0.1875rem;
+}
+.flatpickr-day.endRange:hover {
+	outline: 0px solid #0f63fe00;
+	outline-offset: -2px;
+	color: #161616;
+	background: #f4f4f4;
+    border-radius: 30px;
+}
+.flatpickr-day.today.selected {
+	outline: 0px solid #0f63fe00;
+	outline-offset: -2px;
+}
+.flatpickr-day.inRange {
+	color: #161616;
+	background-color: #66c68f77;
+    border-radius: 30px;
+}
+.flatpickr-day:hover {
+	background: #66C68F;
+    border-radius: 30px;
+}
+.flatpickr-calendar.open:focus {
+	outline: 0px solid #0f62fe;
+}
+.numInputWrapper .numInput {
+	display: inline-block;
+	width: 100%;
+	margin: 0;
+	padding: 0.25rem;
+	color: #000;
+	font-weight: 600;
+	font-size: inherit;
+	font-family: inherit;
+	/* background-color: transparent; */
+	border: none;
+	cursor: default;
+	-moz-appearance: textfield;
+}
+.flatpickr-prev-month, .flatpickr-next-month {
+	line-height: 16px;
+	cursor: pointer;
+	fill: #66C68F;
+    
+}
+.flatpickr-prev-month:hover, .flatpickr-next-month:hover {
+	background-color: transparent;
+    /* fill: #000; */
+    border-radius: 30px;
+}
+.numInputWrapper .numInput:focus {
+	outline: 0px solid #0f63fe00;
+}
+.numInputWrapper:hover {
+	/* background-color: #66C68F; */
+}
+.flatpickr-current-month .cur-month:hover {
+	background-color: transparent;
+}
+.bx--date-picker__icon {
+	position: absolute;
+	z-index: 1;
+	top: 50%;
+	right: 1rem;
+	fill: #161616;
+	pointer-events: none;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+    display: none;
+}
+.flatpickr-day.endRange.inRange.selected {
+	color: #ffffff;
+	background: #66C68F;
+}
+.flatpickr-day.startRange.inRange:not(.selected), .flatpickr-day.endRange.inRange {
+	outline: 0px solid #0f63fe00;
+	outline-offset: -2px;
+	z-index: 3;
+	background: #f4f4f4;
+}
+.flatpickr-day.today::after {
+	position: absolute;
+	bottom: 0.4375rem;
+	left: 50%;
+	display: block;
+	width: 0.25rem;
+	height: 0.25rem;
+	background-color: transparent;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+	content: '';
+}
+
+.flatpickr-weekday {
+	font-family: 'Playfair Display', serif;
+	font-size: 0.875rem;
+	font-weight: 400;
+	line-height: 1.28572;
+	letter-spacing: 0.16px;
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	color: #66C68F;
+	cursor: default;
+}
+.flatpickr-day {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.28572;
+	letter-spacing: 0.16px;
+	/* display: -webkit-box; */
+	/* display: -ms-flexbox; */
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	color: #161616;
+	cursor: pointer;
+	-webkit-transition: all 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+	transition: all 70ms cubic-bezier(0.2, 0, 0.38, 0.9);
+	margin: 5px;
+	padding-bottom: 4px;
+}
+.numInputWrapper {
+	position: relative;
+	width: 3.75rem;
+	border-radius: 30px;
+}
+.flatpickr-current-month {
+	font-family: 'Playfair Display', serif;
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.28572;
+	letter-spacing: 0.16px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	height: 1.75rem;
+	text-align: center;
+}
+.flatpickr-current-month .cur-month {
+	margin-right: 0.25rem;
+	margin-left: 0.25rem;
+	font-family: 'Playfair Display', serif !important;
+}
+
+.numInputWrapper:hover .arrowUp, .numInputWrapper:hover .arrowDown {
+	opacity: 1;
+}

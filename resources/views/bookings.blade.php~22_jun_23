@@ -1,0 +1,1123 @@
+@include('_header1')
+
+<?php
+  use \App\Http\Controllers\BookingController;
+?>
+
+<style type="text/css">
+    .navbar-expand-xl .navbar-collapse {
+        justify-content: end;
+    }
+  .nav .nav-item .nav-link.active{
+    border-width: 5px;
+  }
+
+   .cursor-pointer{cursor: pointer;}
+   .cs_btn{font-size: 14px!important;
+   width: fit-content;
+   padding: 3px 8px!important;}
+   .loc_type_card.active{background-color: #78c694;color:#fff;}
+   .sub-temp-card.active{background-color: #78c694!important}
+   .sub-temp-fixed-loc-card{cursor: pointer;}
+   .sub-temp-table tr td textarea, .sub-temp-table tr td select{min-width: 100px}
+
+
+.bdr_left{border-left: 1px solid #EFEFEF;}.bdr_right{border-right: 1px solid #EFEFEF;}.bdr_bottom{border-bottom: 1px solid #EFEFEF;}.bdr_top{border-top: 1px solid #EFEFEF;}
+.border-top-left-radius{border-top-left-radius: 8px}
+.border-top-right-radius{border-top-right-radius: 8px}
+.border-bottom-left-radius{border-bottom-left-radius: 8px}
+.border-bottom-right-radius{border-bottom-right-radius: 8px}
+.top_nav_sec{
+  /*border: 1px solid #EFEFEF;*/
+  border-radius: 8px;
+}
+.top_nav{
+  width: 34%;
+  padding: 2px;
+}
+.top_nav span{
+  padding: 11px 0;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 27px;
+  color: #000000;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.top_nav.active span{
+  background: #21B8BF;
+  border-radius: 8px;
+  color: #fff;
+}
+.pg_ttl{
+  font-weight: 500;
+  font-size: 32px!important;
+  line-height: 43px;
+}
+.mt-40{margin-top: 40px;}
+.mt-20{margin-top: 20px;}
+.mb-20{margin-bottom: 20px;}
+.p-20{padding: 20px;}
+.f-16{font-size: 16px;}
+.f-14{font-size: 14px;}
+.f-8{font-size: 8px!important;}
+.f-10{font-size: 10px!important}
+.bg-grey{  background: #f8f8f8; }
+.flt_sec{padding: 10px;justify-content: end;align-items: center;border-radius: 8px;}
+.flt_sec .setting_span, .flt_sec .filter_span, .flt_sec .add_span, .flt_sec .action_span, .delete_span{
+  background: #FFFFFF;
+  border: 1px solid #B3B3B3;
+  border-radius: 33px;
+  color: #000000;
+  font-size: 16px;
+  line-height: 21px;
+  padding: 8px 20px;
+  display: block;
+  margin-right: 20px;
+  display: flex;
+  align-items:center;
+}
+.flt_sec .notif_span{
+  display: block;
+  color: #B3B3B3;
+}
+.swal-text,.swal-button--cancel{color:#111;text-align: center;} .swal-button--catch{background-color: #009688;}.swal-button--catch:not([disabled]):hover{    background-color: #026a61;}
+
+  .custom_sel{position: relative;}
+  .custom_sel ul.one_rw, .fltr_ul_sec{background: #fff;
+        position: absolute;
+        z-index: 10000;
+        width: fit-content;
+        min-width: 200px;
+        list-style: none;
+        padding: 7px 20px;
+        margin-top: 10px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 20px rgba(16, 8, 63, 0.09);
+        display: none;
+        font-size: 14px;
+    }
+    .custom_sel.open ul.one_rw, .custom_sel.open .fltr_ul_sec{display: block;right: 0}
+    .custom_sel ul.one_rw li{padding: 10px 2px;display: flex;justify-content: space-between;}
+    .custom_sel ul.one_rw li:not(:first-child){border-top: 1px solid #e9e9e9}
+    .custom_sel ul.one_rw li input{width: 20px;height: 20px;top: -2px;    vertical-align: middle;}
+     .custom_sel ul.one_rw li input:checked{color: red;background-color: red !important;}
+    .custom_sel_ic{cursor: pointer;}
+    .custom_sel.open .custom_sel_ic:not(.flt){
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+    .fltr_ul_sec{
+      width: 225px;
+    }
+    ul.fltr_ul{
+      float: left;
+      list-style: none;
+      padding: 7px 12px;
+      margin-top: 10px;  
+      width: 100%;
+    }
+    ul.fltr_ul li{
+      padding: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+    ul.fltr_ul li .custom_check{
+      margin-left: 10px
+    }
+    ul.fltr_ul li:first-child{
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 21px;
+    }
+    ul.fltr_ul li:not(:first-child){
+      font-size: 14px;
+      line-height: 19px;    
+      text-transform: capitalize;
+      color: #323232;
+    }
+
+    .custom_sel ul.fltr_ul li input{
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+    .custom_sel ul.fltr_ul li .checkmark{
+        height: 14px;
+        width: 14px;
+        background-color: #fff;
+        border: 1px solid #c3c3c3;
+        display: block;
+        border-radius: 2px;
+    }
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+      content: "";
+      /*position: absolute;*/
+      display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .custom_sel ul li input:checked ~ .checkmark:after {
+      display: block;
+    }
+    .custom_sel ul.fltr_ul li .checkmark:after {
+      /*left: 9px;
+      top: 5px;*/
+        margin-left: 4px;
+        width: 4px;
+        margin-top: 1px;
+        height: 8px;
+        border: solid #66C68F;
+        border-width: 0 1px 1px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    .custom_sel ul.fltr_ul li input:checked ~ .checkmark {
+        border-color: #66C68F;
+    }
+    
+    .pg_headh{
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 43px;
+    text-transform: capitalize;
+    color: #000000;
+    text-align: center;
+}
+.pg_headhr{
+    background: linear-gradient(90deg, #21B8BF 0%, #66C68F 100%);
+    height: 5px;
+    margin-bottom: 40px;
+}
+.sync_btn{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    text-transform: capitalize;
+
+    color: #000000;
+    border: 1px solid #B3B3B3;
+    border-radius: 33px;
+    padding: 8px 20px;
+    background-color: #fff;
+    margin-right: 20px;
+}
+.booking_list_sec{
+    overflow-x: auto;
+}
+.booking_list_sec .list_tbl {
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #E4E4E4;
+    border-radius: 8px;
+    table-layout: fixed;
+}
+.booking_list_sec .list_tbl thead tr td {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #000000;
+    /*min-height: 70px;*/
+    padding: 13px;
+}
+.booking_list_sec .list_tbl tbody tr td:not(.price) {
+    padding: 8px
+}
+.rej_btn {
+    background: #F16060;
+    border-radius: 2px;
+    /* width: 48px; */
+    height: 23px;
+    padding: 2px 8px;
+    color: #FFFFFF;
+    line-height: 13px;
+    font-size: 12px;
+    border: none;
+
+}
+.cus_btn {
+    background: #fff;
+    /* width: 48px; */
+    /*height: 23px;*/
+
+    padding: 8px 12px;
+    color: #000000;
+    border: 1px solid #B3B3B3;
+    border-radius: 33px;
+    line-height: 13px;
+    font-size: 13px;
+    min-width: 100px;
+  
+}
+.acc_btn {
+    background: #66C68F;
+    border-radius: 2px;
+    /* width: 48px; */
+    height: 23px;
+    padding: 2px 8px;
+    color: #FFFFFF;
+    line-height: 13px;
+    font-size: 12px;
+    border: none;
+    margin-right: 3px;
+
+}
+.mybtn{
+        background: linear-gradient(90.14deg, #66C68F 1.34%, #21B8BF 99.89%);
+        border-radius: 55px;
+        padding: 6px 12px;
+        border: 0;
+        color: #FFFFFF;
+        padding: 6px 12px;
+        font-size: 13px;
+        min-width: 100px;
+    }
+.msg_spn{
+      background: #eff9f3;
+      padding: 10px 14px;
+      text-align: center;
+      border-radius: 8px;
+}
+.cancel_bk_tr td{
+    text-decoration: line-through;
+    background: #E5E5E5;
+}
+.ttl_spn_bk{
+  padding: 10px 0;
+  text-align: center;
+}
+
+.trash_spn, .cancel_text{
+  color: #F16060;
+}
+.btn.border-custom{
+  border:1px solid #EFEFEF;
+  border-radius: 4px;
+}
+.v-align-top{vertical-align: text-top;}
+.v-align-bottom{vertical-align: bottom;}
+.v-align-middle{vertical-align: middle;}
+.custom_btn{
+  background: #66C68F;
+border: 1px solid #66C68F;
+border-radius: 8px;
+width: 296px;
+height: 45px;
+color: #fff
+}
+.custom_btn:hover{
+  background: #66C68F;
+  color: #fff
+}
+.text_strik{
+  text-decoration: line-through;
+}
+.req_drp{
+  border: 1px solid #B3B3B3;
+    border-radius: 33px;
+    font-size: 12px;
+}
+.req_drp .custom_sel ul{
+  right: 0;
+  left: -56px;
+  min-width: 115px;
+  
+}
+td.highlight{
+  background: #cee1ff;
+}
+</style>
+
+<!--Tabs Start-->
+<div class="container mb-4">
+   <div class="row">
+        <div class="col-md-12">
+            <h2 class="pg_headh">Bookings</h2>
+            <div class="pg_headhr"></div>
+        </div>
+    </div>
+</div>
+<!--Tabs End-->
+<input type="hidden" id="bktype" value="{{$type}}">
+<div class="container">
+  <div class="top_nav_sec d-flex">
+    <div class="top_nav bdr_right bdr_top bdr_left bdr_bottom border-top-left-radius border-bottom-left-radius @if($type=='requested') active @endif">
+      <span onclick="show_booking('requested')" class="cursor-pointer">Requested</span>
+    </div>
+    <div class="top_nav bdr_right bdr_top bdr_bottom @if($type=='confirm') active @endif">
+      <span onclick="show_booking('confirm')" class="cursor-pointer">Confirmed</span>
+    </div>
+    <div class="top_nav bdr_bottom bdr_top bdr_right border-top-right-radius border-bottom-right-radius @if($type=='complete') active @endif">
+      <span onclick="show_booking('complete')" class="cursor-pointer">Completed</span>
+    </div>
+  </div>
+
+  <div class="flt_sec d-flex bg-grey mt-40">
+    <div>&nbsp;</div>
+    <div class="sync_btn">
+        Synchronize with Calendar
+    </div>
+    <!-- <div class="add_span">Action &nbsp;
+      <div class='custom_sel'>
+          <span class="custom_sel_ic flt" style="right:14px"><i class="fw-bold fa fa-angle-down"></i></span>
+          <ul class="action_ul one_rw">
+              <li>
+                  <label>
+                      <span>Edit Bookings</span>
+                  </label>
+              </li>
+              <li>
+                  <label>
+                      <span>Reschedule booking</span>
+                  </label>
+              </li>
+              <li>
+                  <label>
+                      <span>Cancel Booking</span>
+                  </label>
+              </li>
+          
+          </ul>
+      </div>
+    </div> -->
+    <span class="notif_span"><i class="fa fa-bell-o"></i></span>
+  </div>
+</div>
+
+<div class="container booking_list_sec mt-40">
+  <table class="list_tbl">
+    <thead>
+      <tr>
+        <td class="text-center bdr_right" style="width: 10%;min-width: 110px;">Booking ID</td>
+        <td class="text-center bdr_right" style="width: 12%;min-width: 106px;">Pro Name</td>
+        <td class="text-center bdr_right" style="width: 17%;min-width: 106px;">Location</td>
+        <!-- <td class="text-center bdr_right" style="width: 13%;min-width:148px">TM</td> -->
+        <td class="text-center bdr_right" style="width: 20%;min-width:150px">(Sub)Service Schedule</td>
+        <td class="text-center bdr_right" style="width: 22%;min-width:150px">(Sub)Service Detail</td>
+        <td class="text-center bdr_right" style="width: 10%;min-width:100px">Price</td>
+        <!-- <td class="text-center bdr_right" style="width: 10%;min-width:120px">Action</td> -->
+        <!-- <td class="text-center bdr_right" style="width: 8%;min-width:30px"></td> -->
+      </tr>
+    </thead>
+    <tbody>
+
+      @foreach($booking as $books)
+
+          @php
+            $resc_bk=0;
+            $n_dt='';
+            $n_tim='';
+          @endphp
+          @if(!empty($books->edit_requests))
+            @foreach($books->edit_requests as $bk_request)
+              @if($bk_request->client_status=='new' && $bk_request->type == 'reschedule')
+                @php
+                $resc_bk=1;
+                $n_dt= $bk_request->new_date;
+                $n_tim= $bk_request->new_time;
+                @endphp
+              @endif
+            @endforeach
+          @endif 
+
+        <tr class="bk_tr_{{$books->id}}  @if($books->status=='cancel') cancel_bk_tr @endif">
+          <td class="bdr_top text-center v-align-top" style="padding:16px 20px;" rowspan=" {{ $books->total_units + 1 }} ">
+            <span class="d-block">{{$books->order_id}} 
+              @if($books->photoshoot=='Y')
+              <img src="{{URL::asset('public/icons/camera_ic.png')}}"></span>
+              @endif
+            <span class="d-block"><img src="{{URL::asset('public/icons/calendar_ic.png')}}"></span>
+
+
+            @if(!empty($books->edit_requests))
+
+            <?php
+            $tmreqq='0';
+            $ed_req_str='';
+            ?>
+
+            @foreach($books->edit_requests as $bk_request)
+
+              @if($bk_request->client_status=='new')
+                @if($bk_request->type == 'reschedule')
+                  <input type="hidden" id="resch_type_{{$bk_request->id}}" value="all">
+                  <span class="d-block mt-4" style="margin-bottom: 10px;font-size:10px">Reschedule Request</span>
+                  <div class="req_drp d-flex justify-content-center align-items-center mb-2"><span id="res_lbl_spn_{{$bk_request->id}}">All</span> &nbsp;
+                    <div class='custom_sel'>
+                        <span class="custom_sel_ic flt" style="right:14px"><i class="fw-bold fa fa-angle-down"></i></span>
+                        <ul class="one_rw">
+                            <li>
+                                <label>
+                                    <span class="cursor-pointer res_span_{{$bk_request->id}}" onclick="resch_type('all','{{$bk_request->id}}')">All</span>
+                                </label>
+                            </li>
+                            @if($n_dt!='')
+                            <li>
+                                <label>
+                                    <span class="cursor-pointer" onclick="resch_type('date','{{$bk_request->id}}')">Date</span>
+                                </label>
+                            </li>
+                            @endif
+
+                            @if($n_tim!='')
+                            <li>
+                                <label>
+                                    <span class="cursor-pointer" onclick="resch_type('time','{{$bk_request->id}}')">Time</span>
+                                </label>
+                            </li>
+                            @endif
+
+                        </ul>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                      <br>
+                      <button type="button" class="acc_btn" onclick="edit_accept_res('{{$bk_request->id}}')">Accept</button>
+                      <button type="button" class="rej_btn" onclick="edit_reject_res('{{$bk_request->id}}')">Reject</button>
+                  </div>
+                @else
+                  <?php
+                  if($bk_request->type == 'team_member'):
+                    $tmreqq++;
+                    $ed_req_str.= '<li>
+                                <label>
+                                    <span class="cursor-pointer req_span_'.$bk_request->id.'" onclick="ed_req_type(\'New TM '.$tmreqq.'\',\''.$bk_request->id.'\')">New TM '.$tmreqq.'</span>
+                                </label>
+                            </li>'; 
+                  endif;
+                  ?>
+                  
+                @endif
+              @endif
+            @endforeach
+
+            @if($ed_req_str!='')
+              <input type="hidden" id="ed_req_type" value="0">
+              <span class="d-block mt-4" style="margin-bottom: 10px;font-size:10px">Edit Request</span>
+              <div class="req_drp d-flex justify-content-center align-items-center mb-2"><span id="req_lbl_spn">All</span> &nbsp;
+                <div class='custom_sel'>
+                    <span class="custom_sel_ic flt" style="right:14px"><i class="fw-bold fa fa-angle-down"></i></span>
+                    <ul class="one_rw">
+                        <li>
+                            <label>
+                                <span class="cursor-pointer req_span_0" onclick="ed_req_type('all','0')">All</span>
+                            </label>
+                        </li>
+                        {!! $ed_req_str !!}
+                    </ul>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center">
+                  <br>
+                  <button type="button" class="acc_btn" onclick="edit_accept('{{$books->id}}')">Accept</button>
+                  <button type="button" class="rej_btn" onclick="edit_reject('{{$books->id}}')">Reject</button>
+              </div>
+
+            @endif
+            @endif
+            
+          </td>
+          <td class="text-left bdr_top bdr_left v-align-top" rowspan=" {{ $books->total_units + 1 }} ">
+            {{$books->booking_professional[0]->fixed_name}}
+          </td>
+          <td class="text-left bdr_top bdr_left v-align-top" rowspan=" {{ $books->total_units + 1 }} ">
+            @if($books->location_type=='f')
+              FL: @if(isset($books->booking_professional[0]->prof_fix_location))
+                  {{$books->booking_professional[0]->prof_fix_location[0]->street}}, {{$books->booking_professional[0]->prof_fix_location[0]->number}}, {{$books->booking_professional[0]->prof_fix_location[0]->municipality}}, {{$books->booking_professional[0]->prof_fix_location[0]->province}} {{$books->booking_professional[0]->prof_fix_location[0]->postal_code}}
+                  @endif
+            @else
+              DL: {{$books->address}}
+            @endif
+            
+          </td>
+          <td class="bdr_top bdr_left text-center v-align-top">
+
+            
+            @if($resc_bk=='1' && $n_dt!='')
+              <span class="text_strik res_dt_span" style="font-size:14px;">{{ date('d-M-Y',strtotime($books->book_date)) }}</span>
+              <span>{{ date('d-M-Y',strtotime($n_dt)) }}</span>
+            @else
+              <span>{{ date('d-M-Y',strtotime($books->book_date)) }}</span>
+            @endif
+
+          </td>
+          <td class="bdr_top bdr_left">
+          </td>
+          <td class="bdr_top bdr_left">
+          </td>
+          <!-- <td class="bdr_top bdr_left v-align-top"  rowspan=" {{ $books->total_units + 1 }} ">
+            
+              
+              <span class="d-block" style="margin-bottom: 10px;">Edit request</span>
+              
+              <div class="d-flex justify-content-center">
+                  <br>
+                  <button type="button" class="acc_btn">Accept</button>
+                @if($books->status!='reject')  
+                  <button type="button" class="rej_btn">Reject</button>
+                @endif  
+              </div>
+
+              <br>
+              
+          </td> -->
+        </tr>
+        @foreach($books->booking_trans as $k=>$book_trans)
+            <tr class="bt_tr_n_{{$k}}_{{$books->id}} bt_tr_{{$book_trans->id}} @if($book_trans->status=='cancel') cancel_bk_tr @endif" data-time="{{$book_trans->start_time}}" data-date="{{ date('d-m-Y',strtotime($books->book_date))}}" data-date1="{{ date('Y/m/d',strtotime($books->book_date))}}">
+              <td class="text-center bdr_left p-0 v-align-top ed_td">
+                @if($book_trans->team_member!='0')
+                  @php 
+                    $tm_req = BookingController::get_tm_request($books->id,$book_trans->id,'client');
+                    if($tm_req and count($tm_req)>0){
+                      $n_tm = BookingController::get_team_member($tm_req[0]->new_tm);
+                    }
+                  @endphp  
+
+                  @if($tm_req and count($tm_req)>0)
+                    <span class="text_strik tm_ed_span_{{$tm_req[0]->id}}" style="font-size:14px;">{{$book_trans->booking_team_member->member}}</span>
+                   
+                   {{$n_tm->member}} - 
+                   
+                  @else 
+                    {{$book_trans->booking_team_member->member}} -
+                  @endif   
+                @endif
+              
+                @if($resc_bk=='1' && $k==0 && $n_tim!='')
+                  <span class="text_strik res_tim_span" style="font-size:14px;">{{$book_trans->start_time }}</span>
+                  <span>{{ $n_tim }}</span>
+                @else
+                  <span>{{$book_trans->start_time}}</span>
+                @endif
+
+             - {{$book_trans->cust_name}}
+              </td>
+              <td class="text-center bdr_left px-2 py-2 v-align-top">
+                <div class="d-flex justify-content-center">
+                  <div class="w-100">
+                    
+
+
+                    
+                    {{$book_trans->booking_service->service_name}} <br> {{$book_trans->duration}}   
+                  </div>
+                  <div>
+                    @if($book_trans->status!='cancel' && $book_trans->status!='completed')
+                    <input type="hidden" class="services_{{$books->id}}" value="{{$book_trans->service_id}}~~{{$book_trans->price}}">
+                    <span class="cancel_text cursor-pointer" onclick="booking_service_status('{{$book_trans->id}}', '{{$books->id}}')"><!-- <img src="{{URL::asset('public/icons/trash_empty.svg')}}" style="width: 18px;"> --><i class="fa fa-times"></i></span>
+                    @endif
+                  </div>
+                </div>
+                
+              </td>
+              <td class="text-center bdr_left p-0 v-align-top price">
+                  {{$book_trans->price}} EUR
+                  
+              </td>
+            </tr>
+        @endforeach
+        <!-- <tr>
+          <td class="text-center bdr_left p-0"></td>
+          <td class="text-center bdr_left p-0"></td>
+          <td class="text-center bdr_left p-0"><span class="bdr_top d-block w-100 ttl_spn_bk"><b>Total</b> {{$books->service_total_cost}} EUR</span></td>
+        </tr> -->
+   
+        <tr>
+          <td class=" bdr_left text-center v-align-middle">
+            <div class="text-center">
+              @if($books->status!='complete' && $books->status!='cancel')
+              <button type="button" class="cus_btn" onclick="reject_booking('{{$books->id}}')">Cancel</button>
+              @endif
+            </div>
+          </td>
+          <td class=" bdr_left text-center v-align-bottom">
+          </td>
+          <td class=" bdr_left text-center v-align-bottom">
+          </td>
+          <td class=" bdr_left text-center v-align-middle">
+            
+                @if($resc_bk=='0' && $books->status!='complete' && $books->status!='cancel')
+                <div class="text-center">
+                  <button type="button" class="btn cus_btn" onclick="reschedule_booking('{{$books->id}}')">Reschedule</button>
+                </div>
+                @endif
+            
+          </td>
+          <td class=" bdr_left text-center v-align-middle">
+            <div class="text-center">
+              @if($books->status!='complete' && $books->status!='cancel')
+              <button type="button" class="mybtn add_newservice_btn" data-lct="{{$books->location_type}}" data-book="{{$books->id}}" data-prof="{{ md5($books->prof_id) }}"  data-pro="{{ $books->prof_id }}" data-profn="{{$books->booking_professional[0]->legal_name}}">+ Service</button>
+              @endif
+            </div>
+          </td>
+          <td class=" bdr_left text-center v-align-top price">
+            <span class="bdr_top d-block w-100 ttl_spn_bk"><b>Total</b> {{$books->service_total_cost}} EUR</span>
+          </td>
+          <!-- <td class=" bdr_left text-center v-align-top"> -->
+          </td>
+        </tr>
+      @endforeach
+
+     
+      
+    </tbody>
+    
+  </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalajx" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background-color: transparent;border:0;">
+      <img src="{{URL::asset('public/images/ajax-loader.gif')}}" style="margin:auto;width:100px">
+      <!-- <div class="modal-body border-custom rounded p-4" style="max-height: 95vh;height: 400px;">
+        <div class="text-center">
+          <img src="{{ URL::asset('public/images/logo-lg.png')}}" alt="logo" class="mt-3" style="width:100px"/>
+          <h3 class="text-custom-primary my-4">Thank you <br> for registering with Mollure!</h3>
+          <p class="mt-4" style="font-size:24px;">We shall get back to you as the earliest.</p>
+          <p class="mt-4" style="font-size:20px;"><a href="{{config('app.url')}}">Bakc To Home</a></p>
+        </div>
+      </div> -->
+     
+    </div>
+  </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width: 336px;top:20%">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom:none;">
+        <h4 class="modal-title" style="font-size: 18px;font-weight:700;width: 100%;text-align:center">Reschedule Booking</h4>
+        <span class="cursor-pointer" style="font-weight: bold;font-size:18px;" onclick="close_modal('myModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <input type="hidden" id="rs_bk_id" value="0">
+          <input type="text" class="form-control" id="bk_current_date_time" readonly>
+        </div>
+        <div class="position-relative">
+          <input type="text" class="form-control" id="bk_new_date_time" placeholder="Select New Date and Time">
+          <span style="position: absolute;top:6px;right:10px;"><i class="fa fa-angle-down fw-bold"></i></span>
+        </div>
+
+        <div class="mt-4 text-center">
+          <input type="button" class="custom_btn" value="Save" onclick="save_reschedule()">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+@include('salon/footer')
+<script src="{{URL::asset('public/js/sweetalert.min.js')}} "></script>
+<link href="{{URL::asset('public/datetimepicker/jquery.datetimepicker.css')}}" rel="stylesheet"/>
+<script src="{{URL::asset('public/datetimepicker/jquery-3.6.0.min.js')}} "></script>
+<script src="{{URL::asset('public/datetimepicker/jquery.datetimepicker.js')}} "></script>
+<script type="text/javascript">
+
+  $(document).ready(function(){ 
+    var json_str = null;
+    document.cookie = 'services' + '=' + json_str + ';path=/';
+    document.cookie = 'profId' + '=0;path=/';
+
+    var date = new Date();
+        date.setTime(date.getTime() + (1 * 1000));
+        document.cookie = 'edit_booking' + '=;expires='+date+';path=/';
+
+    $('.add_newservice_btn').on('click',function(){
+
+      var json_str = null;
+      document.cookie = 'services' + '=' + json_str + ';path=/';
+      document.cookie = 'profId' + '=0;path=/';
+
+      var booking_id = $(this).attr('data-book');
+      var lct = $(this).attr('data-lct');
+      var profId = $(this).attr('data-prof');
+      var profI = $(this).attr('data-pro');
+      var profn = $(this).attr('data-profn');
+      prof_detail(profId,profn,lct,booking_id, profI);
+    });
+
+  });
+
+  function prof_detail(pid, n, t, booking_id, profI){
+
+
+    var json_str = null;
+    var ar=new Array;
+
+    var prdct = [];
+    $('.services_'+booking_id).each(function(){
+
+      var sid_p = $(this).val();
+      var a = sid_p.split('~~');
+
+      var sid = a['0'];
+      var p = a['1'];
+
+      var q=1;
+      var arr = [sid, q, p];
+
+      let ce=0;
+      for(var i=0;i<prdct.length;i++){
+
+         if(prdct[i][0]==sid){
+            let q1 = prdct[i][1];
+            prdct[i][1]= parseInt(q1)+1;
+            ce=1;
+         }
+      }  
+
+      if(ce==0){
+        prdct.push(arr);
+      }
+
+    });
+
+    var expires = new Date();
+    expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
+    var json_str = JSON.stringify(prdct);
+
+    document.cookie = 'services' + '=' + json_str + ';expires=' + expires.toUTCString()+';path=/';
+
+    document.cookie = 'profId='+profI+';path=/';
+    document.cookie = 'edit_booking='+booking_id+';path=/';
+
+
+    n = n.replace(' ','_');
+    n = n.replace('"','');
+    n = n.replace("'",'_');
+    n = n.replace('@','');
+    n = n.replace('#','');
+    n = n.replace(',','');
+    n = n.replace(' ','');
+    n = n.replace('.','');
+    n = n.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+    n = n.toLowerCase();
+
+    window.location.href="{{config('app.url')}}/professionals/"+pid+"/"+encodeURIComponent(n)+"?t="+t+"&b="+booking_id;
+  }
+  
+  function resch_type(t, i){
+    $('#resch_type_'+i).val(t);
+    $('.res_span_'+i).closest('.custom_sel').removeClass('open');
+    $('#res_lbl_spn_'+i).text(t).css('textTransform', 'capitalize');
+
+    $('.res_dt_span, .res_tim_span').closest('td').removeClass('highlight');
+    if(t=='date'){
+      $('.res_dt_span').closest('td').addClass('highlight');
+    }
+    else if(t=='time'){
+      $('.res_tim_span').closest('td').addClass('highlight');
+    }
+
+  }
+
+  function ed_req_type(t, i){
+    $('#ed_req_type').val(i);
+    $('.req_span_'+i).closest('.custom_sel').removeClass('open');
+    $('#req_lbl_spn').text(t).css('textTransform', 'capitalize');
+
+    $('.ed_td').removeClass('highlight');
+    $('.tm_ed_span_'+i).closest('td').addClass('highlight');
+  }
+
+  
+
+  function edit_reject_res(br_id){
+    if(!confirm('Are you sure to Reject?'))return false;
+
+    var t = $('#resch_type_'+br_id).val();
+    $.ajax({
+      url:"{{route('user_ajax')}}",
+      type:'post',
+      data:{'act':'booking_req_res_status','i':br_id,'t':t,'status':'reject','_token':"{{csrf_token()}}"},
+      dataType:'json',
+      success:function(r){
+        if(r.status=='SUCCESS'){
+          location.reload();
+        }
+        else{
+          alert('Something went wrong');
+        }
+      },
+      error:function(e){
+        alert('Something went wrong');
+      }
+
+    })
+  }
+
+  function edit_accept_res(br_id){
+    if(!confirm('Are you sure to Accept?'))return false;
+    var t = $('#resch_type_'+br_id).val();
+
+    $.ajax({
+      url:"{{route('user_ajax')}}",
+      type:'post',
+      data:{'act':'booking_req_res_status','i':br_id,'t':t,'status':'accept','_token':"{{csrf_token()}}"},
+      dataType:'json',
+      success:function(r){
+        if(r.status=='SUCCESS'){
+          location.reload();
+        }
+        else{
+          alert('Something went wrong');
+        }
+      },
+      error:function(e){
+        alert('Something went wrong');
+      }
+
+    })
+  }
+
+  function edit_reject(bkid){
+    if(!confirm('Are you sure to Reject?'))return false;
+    var br_id = $('#ed_req_type').val();
+    
+    $.ajax({
+      url:"{{route('user_ajax')}}",
+      type:'post',
+      data:{'act':'booking_req_status','i':br_id,'bkid':bkid,'status':'reject','_token':"{{csrf_token()}}"},
+      dataType:'json',
+      success:function(r){
+        if(r.status=='SUCCESS'){
+          location.reload();
+        }
+        else{
+          alert('Something went wrong');
+        }
+      },
+      error:function(e){
+        alert('Something went wrong');
+      }
+
+    })
+  }
+  function edit_accept(bkid){
+    if(!confirm('Are you sure to Accept?'))return false;
+    var br_id = $('#ed_req_type').val();
+
+    $.ajax({
+      url:"{{route('user_ajax')}}",
+      type:'post',
+      data:{'act':'booking_req_status','i':br_id,'bkid':bkid,'status':'accept','_token':"{{csrf_token()}}"},
+      dataType:'json',
+      success:function(r){
+        if(r.status=='SUCCESS'){
+          location.reload();
+        }
+        else{
+          // alert('Something went wrong');
+        }
+      },
+      error:function(e){
+        alert('Something went wrong');
+      }
+
+    })
+  }
+
+  function close_modal(md){
+    $("#"+md).modal('hide');
+  }
+
+  function show_booking(type){
+    if(type==$('#bktype').val()){
+      return true;
+    }
+
+    window.location.href="{{route('bookings')}}?t="+type;
+  }
+
+$(document).on('click','.custom_sel_ic',function(){
+    if($(this).closest('.custom_sel').hasClass('open')){
+        $(this).closest('.custom_sel').removeClass('open');
+    }
+    else{
+        $(this).closest('.custom_sel').addClass('open');
+    }    
+});
+
+function reject_booking(i){
+
+  // if(!confirm('Are you sure to cancel this booking?'))return false;
+
+  swal(
+      'Are you sure to cancel this booking?',
+      {
+        buttons: {
+          cancel: "Cancel",
+          catch: {
+            text: "Confirm",
+          },
+          defeat: false,
+        },
+      }
+    )
+    .then((value) => {
+      switch (value) {
+     
+        case "defeat":
+          swal("Got away safely!");
+          break;
+     
+        case "catch":
+          reject_booking_act(i);
+          break;
+     
+        default:
+          // swal("Got away safely!");
+          return false;
+      }
+    });
+
+
+  
+}
+
+
+function reject_booking_act(i){
+  $.ajax({
+    url:"{{route('user_ajax')}}",
+    type:'post',
+    data:{'act':'booking_status','i':i,'status':'cancel','_token':"{{csrf_token()}}"},
+    dataType:'json',
+    success:function(r){
+      if(r.status=='SUCCESS'){
+        $('.bk_tr_'+i).addClass('cancel_bk_tr');
+      }
+      else{
+        alert('Something went wrong');
+      }
+    },
+    error:function(e){
+      alert('Something went wrong');
+    }
+
+  })
+}
+
+
+function booking_service_status(bt,b){
+  // if(!confirm('Are you sure to cancel this service?'))return false;
+  swal(
+      'Are you sure to cancel this service?',
+      {
+        buttons: {
+          cancel: "Cancel",
+          catch: {
+            text: "Confirm",
+          },
+          defeat: false,
+        },
+      }
+    )
+    .then((value) => {
+      switch (value) {
+     
+        case "defeat":
+          swal("Got away safely!");
+          break;
+     
+        case "catch":
+          booking_service_status_act(bt,b);
+          break;
+     
+        default:
+          // swal("Got away safely!");
+          return false;
+      }
+    });
+}
+
+function booking_service_status_act(bt,b){
+  $.ajax({
+    url:"{{route('user_ajax')}}",
+    type:'post',
+    data:{'act':'book_tran_status','ti':bt,'i':b,'status':'cancel','_token':"{{csrf_token()}}"},
+    dataType:'json',
+    success:function(r){
+      if(r.status=='SUCCESS'){
+        $('.bt_tr_'+bt).addClass('cancel_bk_tr');
+      }
+    },
+    error:function(e){
+      alert('Something went wrong');
+    }
+  })
+}
+
+
+function reschedule_booking(book_id){
+
+  $('#bk_new_date_time').datetimepicker('destroy');
+
+
+  var bkdt = $('tr.bt_tr_n_0_'+book_id).attr('data-date');
+  var bktim = $('tr.bt_tr_n_0_'+book_id).attr('data-time');
+  var bkdt1 = $('tr.bt_tr_n_0_'+book_id).attr('data-date1');
+
+  $('#bk_current_date_time').val(bkdt+' '+bktim);
+  $('#rs_bk_id').val(book_id);
+
+  $('#myModal').modal('show');
+  $('#bk_new_date_time').datetimepicker({
+    format:'d-m-Y H:i',
+    startDate:bkdt1
+  });
+  
+}
+
+function save_reschedule(){
+  if($('#rs_bk_id').val()=='' || $('#rs_bk_id').val()=='0'){
+    alert('Something went wrong. Please reload the page.');
+    return false;
+  }
+
+  if($.trim($('#bk_new_date_time').val())==''){
+    alert('Please select new Date and Time');
+    return false; 
+  }
+
+  var bt = $('#rs_bk_id').val();
+  var dt = $('#bk_new_date_time').val();
+
+  $.ajax({
+    url:"{{route('user_ajax')}}",
+    type:'post',
+    data:{'act':'book_tran_reschedule','ti':bt,'new_date':dt,'_token':"{{csrf_token()}}"},
+    dataType:'json',
+    success:function(r){
+      if(r.status=='SUCCESS'){
+        location.reload();
+      }
+    },
+    error:function(e){
+      alert('Something went wrong');
+    }
+  })
+}
+
+
+</script>
+</body>
+</html>

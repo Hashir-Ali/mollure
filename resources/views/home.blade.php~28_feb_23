@@ -1,0 +1,254 @@
+
+@include('_header')
+<style type="text/css">
+* {
+    font-family: 'Poppins', sans-serif;
+}
+@media only screen and (min-width: 1199px) {
+.desktop-banner-pos {
+    margin-top: 0% !important;
+    background-image: url(https://cynnaenterprises.com/mollure/public/images/img3.jpg);
+    background-size: 55%;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+.banner_box {
+  padding-left: 25%;
+}
+.banner-head, h2 {
+    font-size: 50px;
+}
+.mollure_guarantee_box ul li {
+    line-height: 30px;
+}
+
+}
+</style>
+<!-- start Banner -->
+        <section class="mt-5 mb-5 desktop-banner-pos">
+            <div class="container-fluid" style="">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 order-last order-md-first">
+                        <div class="banner_box">
+                            <h2 class="banner-head">Let Mollure work<br />for You </h2>
+                            <p>With Mollure, SALONS and FREELANCERS can manage their own professional appointments in one central location. From booking to invoicing, and client communications in between—Mollure is made for your convenience. It is the most modern, time-efficient and user-friendly way to organize your daily activities.</p>
+                            <h4>One-time and limited promotion</h4>
+                            <p>
+                                <strong>for the first 90 registered professionals:</strong>
+                            </p>
+                            <h4>0,00 EUR/transaction (iDeal Debit)</h4>
+                            <p>
+                                <strong>For the first 50 transactions within 3 months</strong>
+                            </p>
+                            <div>
+                                <a href="{{route('register')}}"><button class="my_bg_color_red banner_btn">Sign up now</button></a>
+                            </div>
+                        </div>
+                    </div>
+              <!--      <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7 order-first order-md-last">
+                        <img style="visibility:hidden;" src="{{ URL::asset('public/images/img3.jpg')}}" class="img-fluid" />
+                    </div>  -->
+                </div>
+            </div>
+        </section>
+
+        <!-- start result you can expect -->
+        <section class="result_expert" id="result_expert">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main_heading_container">
+                            <span>
+                                <h2 class="text-white">Result You Can Expect</h2>
+                                <img src="{{ URL::asset('public/images/logo.png')}}">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="result_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i7.png')}} ">
+                            </span>
+                            <p>Considerable Decrease Of <br /> Inconvenient Interruptions </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="result_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i8.png')}}">
+                            </span>
+                            <p>Full Agenda And Still Time Left <br /> To Do What You Love </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="result_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i9.png') }}">
+                            </span>
+                            <p>Growth And More Cash Flow <br /> For Your Business </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- why mollure -->
+        <section class="pt-5 pb-5 mb-5 " id="whymollue">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main_heading_container">
+                            <span>
+                                <h2>Why Mollure</h2>
+                                <img src="{{ URL::asset('public/images/logo.png')}}">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                        <div class="why_mollure_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i1.png')}}">
+                            </span>
+                            <h3>Service Location flexibility</h3>
+                            <p>Services on fixed and / or desired <br /> location of the client </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                        <div class="why_mollure_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i2.png')}}">
+                            </span>
+                            <h3>Target clients</h3>
+                            <p>Option to target speccific <br /> client groups </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                        <div class="why_mollure_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i3.png')}}">
+                            </span>
+                            <h3>Direct account management</h3>
+                            <p>Manage your account without <br /> any intermediary </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                        <div class="why_mollure_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i4.png')}}">
+                            </span>
+                            <h3>Built in communication tool</h3>
+                            <p>Messaging betwen professional <br /> and client </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                        <div class="why_mollure_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i5.png')}}">
+                            </span>
+                            <h3>Invoice Consolidation</h3>
+                            <p>club multiple invoice to one </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                        <div class="why_mollure_box">
+                            <span>
+                                <img src="{{ URL::asset('public/images/i6.png')}}">
+                            </span>
+                            <h3>Efficient booking process</h3>
+                            <p>Client can select the number of units <br /> for selected services </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <a href="{{route('more-mollure')}}"><button class="more_mollure_btn">More Mollure</button></a>
+                    </div>
+                </div>
+        </section>
+
+
+        <!-- --- start mollure guarantee ---- -->
+        <section class="mollure_guarantee_section" id="guarantee">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mollure_guarantee_box">
+                            <div class="">
+                                <span>
+                                    <h2>Mollure Guarntees </h2>
+                                    <img src="{{ URL::asset('public/images/logo.png')}}">
+                                </span>
+                            </div>
+                            <ul>
+                                <li>
+                                    <i class="fa fa-check" aria-hidden="true"></i> No Sign-up fee
+                                </li>
+                                <li>
+                                    <i class="fa fa-check" aria-hidden="true"></i> No Monthly Subscriptions
+                                </li>
+                                <li>
+                                    <i class="fa fa-check" aria-hidden="true"></i> No New / Repeating Customer Fees
+                                </li>
+                                <li>
+                                    <i class="fa fa-check" aria-hidden="true"></i> No Hidden Costs
+                                </li>
+                                <li>
+                                    <i class="fa fa-check" aria-hidden="true"></i> Direct Deposits
+                                </li>
+                                <li>
+                                    <i class="fa fa-check" aria-hidden="true"></i> Efficiency, Growth And More Time To Do What You Love
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- start price -->
+        <section id="price">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main_heading_container">
+                            <span>
+                                <h2>Price</h2>
+                                <img src="{{ URL::asset('public/images/logo.png')}}">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="price_box">
+                            <div class="first">
+                                <h1>Online <br />Payment </h1>
+                            </div>
+                            <div class="last">
+                                <div class="one">
+                                    <h2>Debit (iDeal):</h2>
+                                    <p>+ 88% - Netherlands</p>
+                                    <p>
+                                        <del>1% +0,29 EUR/transaction</del>
+                                    </p>
+                                    <h2>0,00 EUR/transaction</h2>
+                                    <p>for the first 50 transactions within 3 month</p>
+                                </div>
+                                <div class="two">
+                                    <h3>Debit & Credit</h3>
+                                    <span>2.9% + 0,35 EUR/ trancation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        @include('salon/footer')
+        </body>
+</html>
