@@ -17,7 +17,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function get_page_content($lang='en',$page='home'){
+    public static function get_page_content($lang='en',$page='home'){
 
     	if($lang=='en'){
     		$content = Page_content::where('page',$page)
@@ -38,7 +38,7 @@ class Controller extends BaseController
 		return $content;
     }
 
-    public function get_page_meta($lang='en',$page='home'){
+    public static function get_page_meta($lang='en',$page='home'){
 
 		$content = Page_meta::where('page',$page)
     							->where('status','active')->get();
@@ -46,7 +46,7 @@ class Controller extends BaseController
 		return $content;
     }
 
-    public function get_page_menu($type='',$lang='en'){
+    public static function get_page_menu($type='',$lang='en'){
 
     	if($type=='header')
     		$menu = Menu::where('menu_type','header')->where('status','active')->get();
@@ -68,7 +68,7 @@ class Controller extends BaseController
     	return $resp;
     }
 
-    public function get_settings($lang='en'){
+    public static function get_settings($lang='en'){
         $setting = Setting::all();
         $resp = array();
         if($setting && count($setting)>0){
@@ -83,7 +83,7 @@ class Controller extends BaseController
         return $resp;
     }
 
-    public function get_translation($key=""){
+    public static function get_translation($key=""){
         if($key==''){
             $lang_kwords = Language_keyword::all();
             $lang_kwords_ar = array();
