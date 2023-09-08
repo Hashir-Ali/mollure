@@ -709,6 +709,75 @@ class SalonController extends Controller
 		}
 	}
 
+	public function dashboardAdminUser(Request $req)
+	{
+		$prof_id = '0';
+
+		if($req->userId !== ''){
+			// if coming from admin dashboard
+			$prof_id = $req->userId;
+		}else{
+			// if normal user...
+			$prof_id = session('salon_id');
+		}
+		
+		if($prof_id=='' || $prof_id=='0'){
+			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login');
+		}
+
+
+		$prof = Professional::find($prof_id);
+		
+		if($prof){
+
+			$fixed_loc_salon = Fixed_location_salon::where('prof_id',$prof_id)
+												->where('status','!=','remove')
+												->get();
+
+			$des_loc_salon = Desire_location::where('prof_id',$prof_id)
+												->where('status','!=','remove')
+												->get();
+
+
+			$uri  = $_SERVER['REQUEST_URI'];
+			$qs='';
+			if(strpos($uri, '?') !== false){
+				$qs = explode('?', $uri);
+				$qs = $qs['1'];
+			}
+
+			$huri = route('nl_dashboard').'?'.$qs;
+
+
+			$lang_kwords = Language_keyword::all();
+			$lang_kwords_ar = array();
+			foreach ($lang_kwords as $key => $value) {
+				$lang_kwords_ar[$value->keyword]['english']=$value->english;
+				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
+			}
+
+			$province = Province::where('status','active')->orderBy('name','ASC')->get();
+			$municipality = Municipality::where('status','active')->where('province_id',$prof->prof_address[0]->province_id)->orderBy('name','ASC')->get();
+			// $all_municipality = Municipality::where('status','active')->get();
+		  
+
+			// dd($des_loc_salon);
+			return view('salon.profile')->with('prof',$prof)
+							->with('fixed_loc_salon',$fixed_loc_salon)
+							->with('des_loc_salon',$des_loc_salon)
+							->with('huri',$huri)
+							->with('lang_kwords',$lang_kwords_ar)
+							->with('municipality',$municipality)
+							->with('province',$province);
+							// ->with('all_municipality',$all_municipality);
+		}
+		else{
+			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login')->withErrors(['msg' => 'Something went wrong, please try again.']);
+		}
+	}
+
 	public function password_update(Request $req){
         $legal_name = $req->legal_name;
         $coc = $req->coc;

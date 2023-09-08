@@ -43,26 +43,12 @@
                                 <i class="fa fa-send"></i>
                             </div>
                             <div class="value white">
-                                <h1 class="timer" data-from="0" data-to="320"
-                                    data-speed="1000">
-                                    <!--320-->
-                                </h1>
-                                <p>New Order</p>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <section class="panel ">
-                            <div class="symbol purple-color">
-                                <i class="fa fa-tags"></i>
-                            </div>
-                            <div class="value gray">
-                                <a href="{{route('admin_professionals_list')}}/approve" class="text-black">
-                                <h1 class="purple-color timer" data-from="0" data-to="{{$prof_approved}}"
-                                    data-speed="1000">
-                                    <!--123-->
-                                </h1>
-                                <p>Approved Professionals</p>
+                                <a href="{{route('admin_professionals_list')}}/all/">
+                                    <h1 class="timer" data-from="0" data-to="{{$total_professionals}}"
+                                        data-speed="1000">
+                                        <!--320-->
+                                    </h1>
+                                    <p>Total Professionals</p>
                                 </a>
                             </div>
                         </section>
@@ -74,15 +60,32 @@
                             </div>
                             <div class="value white">
                                 <a href="{{route('admin_professionals_list')}}/pending/" class="text-black">
-                                <h1 class="timer" data-from="0" data-to="{{$prof}}"
-                                    data-speed="1000">
-                                    <!--432-->
-                                </h1>
-                                <p>New Professionals</p>
+                                    <h1 class="timer" data-from="0" data-to="{{$prof}}"
+                                        data-speed="1000">
+                                        <!--432-->
+                                    </h1>
+                                    <p>New Professionals</p>
                                 </a>
                             </div>
                         </section>
                     </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <section class="panel ">
+                            <div class="symbol purple-color">
+                                <i class="fa fa-tags"></i>
+                            </div>
+                            <div class="value gray">
+                                <a href="{{route('professionals_service_list')}}/pending" class="text-black">
+                                <h1 class="purple-color timer" data-from="0" data-to="{{$pending_detail}}"
+                                    data-speed="1000">
+                                    <!--123-->
+                                </h1>
+                                <p>Approved Professionals</p>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
+                    
                     <div class="col-lg-3 col-sm-6">
                         <section class="panel">
                             <div class="symbol green-color">
@@ -94,7 +97,7 @@
                                         data-speed="3000">
                                         <!--2345-->
                                     </h1>
-                                    <p>Templates to Approve</p>
+                                    <p>Listed Professionals</p>
                                 </a>
                             </div>
                         </section>

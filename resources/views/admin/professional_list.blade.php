@@ -135,7 +135,7 @@
                                       <button class="btn btn-success btn-xs mb-2" type="button" title="Approve" onclick="prof_status('{{ $prof->id }}','approve')"><i class="fa fa-check"></i></button>
                                       @endif
 
-                                      <a target="_blank" class="" href="{{ route('service_detail') }}?p={{$prof->id}}" ><button class="btn btn-primary btn-xs mb-2" type="button"><i class="fa fa-pencil"></i></button></a>
+                                      <a target="_blank" class="" href="{{ route('dashboardUsers', ['userId'=>$prof->id ]) }}" ><button class="btn btn-primary btn-xs mb-2" type="button"><i class="fa fa-pencil"></i></button></a>
                                       <button class="btn btn-danger btn-xs  mb-2" type="button" title="Remove" onclick="prof_status('{{ $prof->id }}','remove')"><i class="fa fa-trash-o "></i></button>
                                   </td>
                                 </tr>

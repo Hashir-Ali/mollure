@@ -75,18 +75,21 @@ class AdminController extends Controller
     }
 
     public function dashboard(){
-        $prof = Professional::where('status','pending')->count();
-        $prof_approved = Professional::where('status','approve')->count();
+        $prof = Professional::where('status','pending')->count(); //new professionals...
+        $prof_approved = Professional::where('status','approve')->count(); // user data approved...
 
         // DB::connection()->enableQueryLog();
-        $details = Professional::where('fixed_info','0')
-                                ->orWhere('desire_info', '0')->count();
-        /*$queries = DB::getQueryLog();
+        $details = Professional::where('fixed_info','1')
+                                ->orWhere('desire_info', '1')->count(); // professional templates approved...
+        
+        $total_professionals = Professional::count(); //total professionals.
+        
+                                /*$queries = DB::getQueryLog();
         dd($queries);                                        
         return;*/
                                 
         return view('admin.dashboard')->with('prof',$prof)->with('pending_detail',$details)
-                                        ->with('prof_approved',$prof_approved);
+                                        ->with('prof_approved',$prof_approved)->with('total_professionals', $total_professionals);
     }
 
     public function add_professionals(){
@@ -1791,7 +1794,7 @@ class AdminController extends Controller
             $prof = Professional::
                             select('legal_name','id', 'fixed_info','fixed_name','fixed_bio','fixed_pic','desire_name','desire_bio','desire_pic')
                             ->where('status','approve')
-                            ->where('fixed_info','0')
+                            ->where('fixed_info','2')
                             ->orderBy('updated_at','desc')->get();
 
         else if($status=='approve')
@@ -1808,7 +1811,7 @@ class AdminController extends Controller
                             ->where('fixed_info','!=','2')
                             ->orderBy('id','desc')->get();
 
-
+        // echo($prof);
         return view('admin.prof_serv_list')
                                 ->with('professional',$prof)
                                 ->with('status',$status);

@@ -66,7 +66,7 @@
                                     @if($prof->fixed_pic!='')
                                     <img src="{{asset('public/imgs/template/'.$prof->fixed_pic)}}" style="width:55px" class="img1">
                                     @endif
-                                  </td>
+                                    </td>
                                   <td>
                                     <b class="font-w_l">Name: </b>{{ $prof->desire_name }}<br>
                                     <b class="font-w_l">Bio</b>: {{ $prof->desire_bio }}<br>
@@ -76,7 +76,7 @@
                                   </td>
                                   
                                   <td class="hidden-xs">
-                                      @if($prof->fixed_info=='0')
+                                      @if($prof->fixed_info=='2')
                                       <button class="btn btn-success btn-xs" type="button" title="Approve" onclick="prof_serv_status('{{ $prof->id }}','1')"><i class="fa fa-check"></i></button>
                                       @endif
 

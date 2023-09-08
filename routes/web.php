@@ -129,6 +129,7 @@ Route::post('edmin/login', [AdminController::class, 'loginAct'])->name('loginact
 
 Route::group(['middleware' => ['checkAdmin'],'prefix' => 'edmin'], function () {
 	Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
+	Route::get('dashboardUsers/{userId}', [SalonController::class, 'dashboardAdminUser'])->name('dashboardUsers');
 	Route::get('add_professionals', [AdminController::class, 'add_professionals'])->name('admin_add_professionals');
 	Route::get('professionals/{s?}', [AdminController::class, 'professionals'])->name('admin_professionals_list');
 	Route::post('ajax', [AdminController::class, 'ajax_req'])->name('admin_ajx');
