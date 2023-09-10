@@ -564,6 +564,8 @@
 {{--</div>--}}
 <!--Tabs End-->
 
+<h1>{{route('salon_ajx')}}</h1>
+
 <div class="container">
     <div class="d-flex border-custom mb-3">
         @if($prof->user_type == "professional")
@@ -4142,7 +4144,6 @@ $tt='f';
                 // $('#modalajx').modal('show');
 
                 set_url('f');
-
                 $.ajax({
                     url: "{{route('salon_ajx')}}",
                     type: 'post',
@@ -4196,31 +4197,31 @@ $tt='f';
                                 team_str = create_team_sec(team);
                                 $('#team_mem_f_sec').show();
                                 /*var team_str='';
-                        team_str+="<div style='' class='row mb-3'>";
-                        $.each(team,function(k,v){
-                          team_str+="<div class='border col-12 col-sm-5 col-md-3 mb-3 me-2 p-2' id='tm_sec_"+v.id+"' style='    position: relative;'>";
-                            team_str+="<p class='mb-4'>\""+v.bio+"\"</p>";
-                            team_str+="<div class='d-flex' style='align-items: flex-end;    height: 55px;margin-bottom: 37px;'>";
-                              team_str+="<div class='mb-2 me-2'>";
-                                if(v.image!='' && v.image!==null)
-                                  team_str+='<img src="{{asset("public/imgs/team/")}}/'+v.image+'" style="border: 1px solid #b1abab;width:50px;height: 50px;border-radius:35px">';
-                                else
-                                  team_str+='<img src="{{asset("public/imgs/placeholder-img.jpg")}}" style="border: 1px solid #b1abab;height: 50px;width:50px;border-radius:35px">';
-                              team_str+="</div>";
+                                team_str+="<div style='' class='row mb-3'>";
+                                $.each(team,function(k,v){
+                                team_str+="<div class='border col-12 col-sm-5 col-md-3 mb-3 me-2 p-2' id='tm_sec_"+v.id+"' style='    position: relative;'>";
+                                    team_str+="<p class='mb-4'>\""+v.bio+"\"</p>";
+                                    team_str+="<div class='d-flex' style='align-items: flex-end;    height: 55px;margin-bottom: 37px;'>";
+                                    team_str+="<div class='mb-2 me-2'>";
+                                        if(v.image!='' && v.image!==null)
+                                        team_str+='<img src="{{asset("public/imgs/team/")}}/'+v.image+'" style="border: 1px solid #b1abab;width:50px;height: 50px;border-radius:35px">';
+                                        else
+                                        team_str+='<img src="{{asset("public/imgs/placeholder-img.jpg")}}" style="border: 1px solid #b1abab;height: 50px;width:50px;border-radius:35px">';
+                                    team_str+="</div>";
 
-                              team_str+="<div class='mb-2'>";
-                                team_str+="<p>"+v.member+"</p>";
-                              team_str+="</div>";
+                                    team_str+="<div class='mb-2'>";
+                                        team_str+="<p>"+v.member+"</p>";
+                                    team_str+="</div>";
 
-                            team_str+="</div>";
+                                    team_str+="</div>";
 
-                            team_str+='<p style="    position: absolute;right: 10px;bottom: 0;"><i class="ri-edit-box-line cursor-pointer" onclick="edit_team_member(\''+v.id+'\')"></i> &nbsp; <i class="ri-delete-bin-line text-danger cursor-pointer" onclick="delete_team_member(\''+v.id+'\')"></i></p>';
+                                    team_str+='<p style="    position: absolute;right: 10px;bottom: 0;"><i class="ri-edit-box-line cursor-pointer" onclick="edit_team_member(\''+v.id+'\')"></i> &nbsp; <i class="ri-delete-bin-line text-danger cursor-pointer" onclick="delete_team_member(\''+v.id+'\')"></i></p>';
 
 
-                            team_str+="</div>";
-                        });
+                                    team_str+="</div>";
+                                });
 
-                        team_str+="</div>";*/
+                                team_str+="</div>";*/
 
                             }
                             $('.team_mem_lst_sec').html(team_str);
