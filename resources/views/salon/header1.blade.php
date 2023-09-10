@@ -507,15 +507,33 @@ ul.my_navbar li .dropdown-menu li a:hover {
         <div class="navbar">
             <div class="hamburger"><img src="{{ URL::asset('public/images/popups/icons8-menu-26.png')}}" alt=""></div>
             <ul>
-                <li class="active"><a href="#">{{$lang_kwords['dashboard_profile_menu']['english']}}</a></li>
-                @if($prof->user_type == "company" || $prof->user_type == "individual")
-                    <li><a href="#">Booking</a></li>
-                    <li><a href="#">Inbox</a></li>
-                    <li><a href="#">Favourites</a></li>
+                @if(Route::currentRouteName() == 'dashboard')
+                    <li class="active"><a href="{{route('dashboard')}}">{{$lang_kwords['dashboard_profile_menu']['english']}}</a></li>
                 @else
-                    <li><a href="#">Calendar</a></li>
-                    <li><a href="#">Inbox</a></li>
-                    <li><a href="#">Transactions</a></li>
+                    <li><a href="{{route('dashboard')}}">{{$lang_kwords['dashboard_profile_menu']['english']}}</a></li>
+                @endif
+                @if($prof->user_type == "company" || $prof->user_type == "individual")
+                    <li><a href="{{route('bookings')}}">Booking</a></li>
+                    <li><a href="{{route('prof_messages')}}">Inbox</a></li>
+                    <li><a href="{{route('favorites')}}">Favourites</a></li>
+                @else
+                     @if(Route::currentRouteName() == 'prof_calendar')
+                        <li class="active"><a href="{{route('prof_calendar')}}">Calendar</a></li>
+                    @else
+                        <li><a href="{{route('prof_calendar')}}">Calendar</a></li>
+                    @endif
+                    
+                    @if(Route::currentRouteName() == 'prof_messages')
+                        <li class="active"><a href="{{route('prof_messages')}}">Inbox</a></li>
+                    @else
+                        <li><a href="{{route('prof_messages')}}">Inbox</a></li>
+                    @endif
+
+                    @if(Route::currentRouteName() == 'payment_setting')
+                        <li class="active"><a href="{{route('payment_setting')}}">Transactions</a></li>
+                    @else
+                        <li><a href="{{route('payment_setting')}}">Transactions</a></li>
+                    @endif
                     <li><a href="#">Analytics</a></li>
                 @endif
             </ul>

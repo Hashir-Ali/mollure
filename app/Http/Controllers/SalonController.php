@@ -51,6 +51,21 @@ use \App\Mail\ManualMail;
 class SalonController extends Controller
 {
 
+
+	// utility functions almost required in every other method...
+	public function getLangKeywords(){
+		$lang_kwords = Language_keyword::all();
+			$lang_kwords_ar = array();
+			foreach ($lang_kwords as $key => $value) {
+				$lang_kwords_ar[$value->keyword]['english']=$value->english;
+				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
+			}
+
+			return $lang_kwords_ar;
+	}
+
+	// utility functions end here... 
+
     public function intersection_register(){
         return view('intersection_register');
     }
@@ -72,12 +87,7 @@ class SalonController extends Controller
 
         $huri = url('nl/register').'?'.$qs;
 
-        $lang_kwords = Language_keyword::all();
-        $lang_kwords_ar = array();
-        foreach ($lang_kwords as $key => $value) {
-            $lang_kwords_ar[$value->keyword]['english']=$value->english;
-            $lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-        }
+        $lang_kwords = $this->getLangKeywords();
 
         $content = $this->get_page_content('en','register');
         $meta = $this->get_page_meta('en','register');
@@ -112,7 +122,7 @@ class SalonController extends Controller
                 ->with('meta_title',$meta_title)
                 ->with('menuh',$menuh)
                 ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords_ar)
+                ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
         }elseif ($user_type == "individual"){
             return view('salon.individual_register')->with('huri',$huri)
@@ -121,7 +131,7 @@ class SalonController extends Controller
                 ->with('meta_title',$meta_title)
                 ->with('menuh',$menuh)
                 ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords_ar)
+                ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
         }elseif ($user_type == "company"){
             return view('salon.company_register')->with('huri',$huri)
@@ -130,7 +140,7 @@ class SalonController extends Controller
                 ->with('meta_title',$meta_title)
                 ->with('menuh',$menuh)
                 ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords_ar)
+                ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
         }
     }
@@ -146,12 +156,7 @@ class SalonController extends Controller
 
         $huri = url('nl_register').'?'.$qs;
 
-        $lang_kwords = Language_keyword::all();
-        $lang_kwords_ar = array();
-        foreach ($lang_kwords as $key => $value) {
-            $lang_kwords_ar[$value->keyword]['english']=$value->english;
-            $lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-        }
+        $lang_kwords = $this->getLangKeywords();
 
         $content = $this->get_page_content('nl','register');
         $meta = $this->get_page_meta('nl','register');
@@ -186,7 +191,7 @@ class SalonController extends Controller
                 ->with('meta_title',$meta_title)
                 ->with('menuh',$menuh)
                 ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords_ar)
+                ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
         }elseif ($user_type == "individual"){
             return view('salon.nl.nl_individual_register')->with('huri',$huri)
@@ -195,7 +200,7 @@ class SalonController extends Controller
                 ->with('meta_title',$meta_title)
                 ->with('menuh',$menuh)
                 ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords_ar)
+                ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
         }elseif ($user_type == "company"){
             return view('salon.nl.nl_company_register')->with('huri',$huri)
@@ -204,7 +209,7 @@ class SalonController extends Controller
                 ->with('meta_title',$meta_title)
                 ->with('menuh',$menuh)
                 ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords_ar)
+                ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
         }
     }
@@ -527,12 +532,7 @@ class SalonController extends Controller
 		}
 		else{
 
-			$lang_kwords = Language_keyword::all();
-			$lang_kwords_ar = array();
-			foreach ($lang_kwords as $key => $value) {
-				$lang_kwords_ar[$value->keyword]['english']=$value->english;
-				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-			}
+			$lang_kwords = $this->getLangKeywords();
 
 			$content = $this->get_page_content('en','login');
 			$meta = $this->get_page_meta('en','login');
@@ -578,7 +578,7 @@ class SalonController extends Controller
 							->with('meta_title',$meta_title)
 							->with('menuh',$menuh)
 							->with('menuf',$menuf)
-							->with('lang_kwords',$lang_kwords_ar);
+							->with('lang_kwords',$lang_kwords);
 
 			
 			// return view('salon.login');
@@ -681,12 +681,7 @@ class SalonController extends Controller
 			$huri = route('nl_dashboard').'?'.$qs;
 
 
-			$lang_kwords = Language_keyword::all();
-			$lang_kwords_ar = array();
-			foreach ($lang_kwords as $key => $value) {
-				$lang_kwords_ar[$value->keyword]['english']=$value->english;
-				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-			}
+			$lang_kwords = $this->getLangKeywords();
 
 			$province = Province::where('status','active')->orderBy('name','ASC')->get();
 			$municipality = Municipality::where('status','active')->where('province_id',$prof->prof_address[0]->province_id)->orderBy('name','ASC')->get();
@@ -698,7 +693,7 @@ class SalonController extends Controller
 							->with('fixed_loc_salon',$fixed_loc_salon)
 							->with('des_loc_salon',$des_loc_salon)
 							->with('huri',$huri)
-							->with('lang_kwords',$lang_kwords_ar)
+							->with('lang_kwords',$lang_kwords)
 							->with('municipality',$municipality)
 							->with('province',$province);
 							// ->with('all_municipality',$all_municipality);
@@ -750,12 +745,7 @@ class SalonController extends Controller
 			$huri = route('nl_dashboard').'?'.$qs;
 
 
-			$lang_kwords = Language_keyword::all();
-			$lang_kwords_ar = array();
-			foreach ($lang_kwords as $key => $value) {
-				$lang_kwords_ar[$value->keyword]['english']=$value->english;
-				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-			}
+			$lang_kwords = $this->getLangKeywords();
 
 			$province = Province::where('status','active')->orderBy('name','ASC')->get();
 			$municipality = Municipality::where('status','active')->where('province_id',$prof->prof_address[0]->province_id)->orderBy('name','ASC')->get();
@@ -767,7 +757,7 @@ class SalonController extends Controller
 							->with('fixed_loc_salon',$fixed_loc_salon)
 							->with('des_loc_salon',$des_loc_salon)
 							->with('huri',$huri)
-							->with('lang_kwords',$lang_kwords_ar)
+							->with('lang_kwords',$lang_kwords)
 							->with('municipality',$municipality)
 							->with('province',$province);
 							// ->with('all_municipality',$all_municipality);
@@ -818,7 +808,7 @@ class SalonController extends Controller
 			$password = $req->password;
 			$prof->password = md5($password);
 		}
-//        dd($prof,$name_for_rating,$req->all());
+		//        dd($prof,$name_for_rating,$req->all());
         $prof->update();
 
 		$prof_add = Professional_address::where('prof_id',$prof_id)->first();
@@ -3051,9 +3041,6 @@ class SalonController extends Controller
 			    $objDemo = new \stdClass();
 		        $objDemo->content=$email_content;
 		        $objDemo->subject=$subject;
-
-		         // print_r($email_content);
-		        
 		        Mail::to($email)->send(new ManualMail($objDemo));
 
 	    		$resp['msg'] = 'Check Email';
@@ -3147,8 +3134,6 @@ class SalonController extends Controller
 			    $objDemo = new \stdClass();
 		        $objDemo->content=$email_content;
 		        $objDemo->subject=$subject;
-
-		         // print_r($email_content);
 		        $email = $prof->email;
 		        Mail::to($email)->send(new ManualMail($objDemo));
 
@@ -3213,12 +3198,7 @@ class SalonController extends Controller
 			$page_title = $meta_title = 'Password Recovery - Mollure';
 		}
 
-		$lang_kwords = Language_keyword::all();
-		$lang_kwords_ar = array();
-		foreach ($lang_kwords as $key => $value) {
-			$lang_kwords_ar[$value->keyword]['english']=$value->english;
-			$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-		}
+		$lang_kwords = $this->getLangKeywords();
 		
 		return view('salon.password_recovery')->with('email',$email)
 							->with('status',$type)
@@ -3226,7 +3206,7 @@ class SalonController extends Controller
 							->with('meta_title',$meta_title)
 							->with('menuh',$menuh)
 							->with('menuf',$menuf)
-							->with('lang_kwords',$lang_kwords_ar)
+							->with('lang_kwords',$lang_kwords)
 							->with('prof',$prof)
 							->with('lt',$lt)
 							->with('lang',$lang);
@@ -3239,16 +3219,19 @@ class SalonController extends Controller
 			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
 			return redirect('login');
 		}
+		$prof = Professional::find($prof_id);
 
 		/*$team_memb = "79";
 		$team_member = Prof_team_member::find($team_memb);*/
 		$all_team_member = Prof_team_member::where('status','active')->where('prof_id',$prof_id)->get();
 
+		$lang_kwords = $this->getLangKeywords();
 
 		// $bookt = Book_tran::where('team_member',$team_memb)->where('status','!=','cancel')->get();
-		return view('salon.calendar')
+		return view('salon.calendar')->with('prof',$prof)
 					/*->with('book_trans',$bookt)
 					->with('team_member',$team_member)*/
+					->with('lang_kwords', $lang_kwords)
 					->with('all_team_member',$all_team_member);
 	}
 
@@ -3369,15 +3352,6 @@ class SalonController extends Controller
 				$friday = strtotime('friday this week');
 				$saturday = strtotime('saturday this week');
 				$sunday = strtotime('sunday this week');
-
-				/*$mo_bk = Booking::where('book_date',date('Y-m-d',$monday))->where('status','accept')->get();
-				$tu_bk = Booking::where('book_date',date('Y-m-d',$tuesday))->where('status','accept')->get();
-				$we_bk = Booking::where('book_date',date('Y-m-d',$wednesday))->where('status','accept')->get();
-				$th_bk = Booking::where('book_date',date('Y-m-d',$thursday))->where('status','accept')->get();
-				$fr_bk = Booking::where('book_date',date('Y-m-d',$friday))->where('status','accept')->get();
-				$st_bk = Booking::where('book_date',date('Y-m-d',$saturday))->where('status','accept')->get();
-				$su_bk = Booking::where('book_date',date('Y-m-d',$sunday))->where('status','accept')->get();*/
-
 				$mo_bookt = Book_tran::with('booking_detail')->with('booking_service')->where('team_member',$tm)->where('book_date',date('Y-m-d',$monday))->where('status','!=','cancel')->get();
 				$mon_ar= array();
 				if(count($mo_bookt)>0){
@@ -3399,8 +3373,6 @@ class SalonController extends Controller
 					foreach ($tu_bookt as $key => $value) {
 						$ar_h = $this->get_hr_service($value);
 						$tue_ar[$ar_h->hr]=$ar_h;
-						// $ar_hr['book_detail']=$value->booking_detail;
-						// $tue_ar[]=$ar_hr;
 					}
 
 				}
@@ -3412,8 +3384,6 @@ class SalonController extends Controller
 					foreach ($we_bookt as $key => $value) {
 						$ar_h = $this->get_hr_service($value);
 						$wed_ar[$ar_h->hr]=$ar_h;
-						// $ar_hr['book_detail']=$value->booking_detail;
-						// $wed_ar[]=$ar_hr;
 					}
 
 				}
@@ -3425,8 +3395,6 @@ class SalonController extends Controller
 					foreach ($th_bookt as $key => $value) {
 						$ar_h = $this->get_hr_service($value);
 						$thu_ar[$ar_h->hr]=$ar_h;
-						// $ar_hr['book_detail']=$value->booking_detail;
-						// $thu_ar[]=$ar_hr;
 					}
 
 				}
@@ -3439,8 +3407,6 @@ class SalonController extends Controller
 					foreach ($fr_bookt as $key => $value) {
 						$ar_h = $this->get_hr_service($value);
 						$fri_ar[$ar_h->hr]=$ar_h;
-						// $ar_hr['book_detail']=$value->booking_detail;
-						// $fri_ar[]=$ar_hr;
 					}
 					
 				}
@@ -3452,8 +3418,6 @@ class SalonController extends Controller
 					foreach ($sa_bookt as $key => $value) {
 						$ar_h = $this->get_hr_service($value);
 						$sat_ar[$ar_h->hr]=$ar_h;
-						// $ar_hr['book_detail']=$value->booking_detail;
-						// $sat_ar[]=$ar_hr;
 					}
 
 				}
@@ -3465,36 +3429,9 @@ class SalonController extends Controller
 					foreach ($su_bookt as $key => $value) {
 						$ar_h = $this->get_hr_service($value);
 						$sun_ar[$ar_h->hr]=$ar_h;
-						// $ar_hr['book_detail']=$value->booking_detail;
-						// $sun_ar[]=$ar_hr;
 					}
 
 				}
-
-				/*print_r($mon_ar);
-				die();*/
-
-				/*usort($mon_ar, function($a, $b) {
-				    return ($a['booking']->hr <=> $b['booking']->hr);
-				});
-				usort($tue_ar, function($a, $b) {
-				    return ($a['booking']->hr <=> $b['booking']->hr);
-				});
-				usort($wed_ar, function($a, $b) {
-				    return ($a['booking']->hr <=> $b['booking']->hr);
-				});
-				usort($thu_ar, function($a, $b) {
-				    return ($a['booking']->hr <=> $b['booking']->hr);
-				});
-				usort($fri_ar, function($a, $b) {
-				    return ($a['booking']->hr <=> $b['booking']->hr);
-				});
-				usort($sat_ar, function($a, $b) {
-				    return ($a['booking']->hr <=> $b['booking']->hr);
-				});
-				usort($sun_ar, function($a, $b) {
-				    return ($a['booking']->hr <=> $b['booking']->hr);
-				});*/
 
 				ksort($mon_ar);
 				ksort($tue_ar);
@@ -3518,8 +3455,6 @@ class SalonController extends Controller
 				$resp['bookings']=$ar;
 				$resp['team_member']=$team_member;
 				return response()->json($resp);
-
-				// $book_t = Book_tran::where()
 			}
 		}
 	}
@@ -4168,236 +4103,6 @@ class SalonController extends Controller
 
     }
 
-	// public function ajx_prof_setting_booking(Request $req){
-		
-    //     $resp = array();
-
-      
-		
-		
-    //     if(isset($req->act) && $req->act=='get_bookings'){
-    //         $prof_id = session('salon_id');
-    //         if($prof_id=='' || $prof_id=='0'){
-    //             $request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-    //             return 'NeedProfLogin';
-    //         }
-
-    //         $cl_type = $req->cl;
-
-			
-    //         if($cl_type && $cl_type!=''){
-    //             $prof_client_ar = array();
-
-    //             $prof_client = Prof_client::where('prof_id',$prof_id)->get();
-    //             if($prof_client && count($prof_client)>0){
-    //                 foreach ($prof_client as $key => $value) {
-    //                     $prof_client_ar[$value->user_id] = $value->status;
-    //                 }
-    //             }
-
-
-    //             // if(in_array('all', $cl_type)){
-    //             if('all' == $cl_type){
-
-                   
-
-    //                 $clist = Professional::where('status','approve')->where('user_type','!=','professional')
-    //                             ->whereIn('id',function ($query) use($prof_id){
-    //                                $query->select('user_id')
-    //                                      ->from('bookings')
-    //                                      ->where('prof_id', $prof_id)
-    //                                      ->distinct()
-    //                                      ->get();
-    //                             })
-    //                             ->whereNotIn('id',function ($query) use($prof_id){
-    //                                $query->select('user_id')
-    //                                      ->from('prof_clients')
-    //                                      ->where('prof_id', $prof_id)
-    //                                      ->where('status', 'remove')
-    //                                      ->distinct()
-    //                                      ->get();
-    //                             })
-    //                             ->get();
-
-
-    //                 return view('salon.ajax.client_list')->with('clients',$clist)->with('prof_client',$prof_client_ar);         
-    //             }
-    //             else if('individual' == $cl_type){
-    //                 $clist = Professional::where('status','approve')->where('user_type', 'individual')
-    //                             ->whereIn('id',function ($query) use($prof_id){
-    //                                $query->select('user_id')
-    //                                      ->from('bookings')
-    //                                      ->where('prof_id', $prof_id)
-    //                                      ->distinct()
-    //                                      ->get();
-    //                             })
-    //                             ->whereNotIn('id',function ($query) use($prof_id){
-    //                                $query->select('user_id')
-    //                                      ->from('prof_clients')
-    //                                      ->where('prof_id', $prof_id)
-    //                                      ->where('status', 'remove')
-    //                                      ->distinct()
-    //                                      ->get();
-    //                             })
-    //                             ->get();
-    //                 return view('salon.ajax.client_list')->with('clients',$clist)->with('prof_client',$prof_client_ar);         
-    //             }
-    //             else if('company' == $cl_type){
-    //                 $clist = Professional::where('status','approve')->where('user_type', 'company')
-    //                             ->whereIn('id',function ($query) use($prof_id){
-    //                                $query->select('user_id')
-    //                                      ->from('bookings')
-    //                                      ->where('prof_id', $prof_id)
-    //                                      ->distinct()
-    //                                      ->get();
-    //                             })
-    //                             ->whereNotIn('id',function ($query) use($prof_id){
-    //                                $query->select('user_id')
-    //                                      ->from('prof_clients')
-    //                                      ->where('prof_id', $prof_id)
-    //                                      ->where('status', 'remove')
-    //                                      ->distinct()
-    //                                      ->get();
-    //                             })
-    //                             ->get();    
-    //                 return view('salon.ajax.client_list')->with('clients',$clist)->with('prof_client',$prof_client_ar);
-    //             }
-
-    //             else if('blocked' == $cl_type){
-    //                 $clist = Professional::where('status','approve')->where('user_type', 'company')
-    //                             ->whereIn('id',function ($query) use($prof_id){
-    //                                $query->select('user_id')
-    //                                      ->from('prof_clients')
-    //                                      ->where('prof_id', $prof_id)
-    //                                      ->where('status', 'block')
-    //                                      ->distinct()
-    //                                      ->get();
-    //                             })
-    //                             ->get();    
-    //                 return view('salon.ajax.client_list')->with('clients',$clist)->with('prof_client',$prof_client_ar);
-    //             }   
-
-    //             return '';
-
-
-    //                 return view('salon.ajax.client_list')->with('clients',$clist);  
-                
-    //         }
-    //     }
-
-	// 	if (isset($req->act) && $req->act == 'edit_booking') {
-
-		
-	// 		if (!isset($req->team_member) || 
-	// 			$req->team_member == '' ||
-	// 			!isset($req->availability_id) ||
-	// 			$req->availability_id == ''
-	// 		) {
-	// 			$resp['status'] = 'ERROR';
-	// 			return response()->json($resp);
-	// 		}
-		
-	// 		$availability_id = $req->availability_id;
-	// 		$team_member = $req->team_member;
-	// 		$location = isset($req->location) ? $req->location : '';
-	// 		$av_from_date = isset($req->av_from_date) ? $req->av_from_date : '';
-	// 		$av_to_date = isset($req->av_to_date) ? $req->av_to_date : '';
-	// 		$av_from_time = isset($req->av_from_time) ? $req->av_from_time : '';
-	// 		$av_to_time = isset($req->av_to_time) ? $req->av_to_time : '';
-	// 		$av_from_day = isset($req->av_from_day) ? $req->av_from_day : '';
-	// 		$av_to_day = isset($req->av_to_day) ? $req->av_to_day : '';
-	// 		$av_serv_interval = isset($req->av_serv_interval) ? $req->av_serv_interval : '';
-
-			
-		
-	// 		// Assuming Team_mem_availability model has been defined
-	// 		$tm_avail = Team_mem_availability::find($availability_id);
-			
-
-			
-	// 		if (!$tm_avail) {
-	// 			$resp['status'] = 'ERROR';
-	// 			return response()->json($resp);
-	// 		}
-		
-	// 		// Update the availability
-	// 		$tm_avail->team_member = $team_member;
-	// 		$tm_avail->location = $location;
-	// 		$tm_avail->from_date = $av_from_date;
-	// 		$tm_avail->to_date = $av_to_date;
-	// 		$tm_avail->from_time = $av_from_time;
-	// 		$tm_avail->to_time = $av_to_time;
-	// 		$tm_avail->from_day = $av_from_day;
-	// 		$tm_avail->to_day = $av_to_day;
-	// 		$tm_avail->serv_interval = $av_serv_interval;
-	// 		$tm_avail->save();
-
-			
-	// 		$resp['status'] = 'SUCCESS';
-	// 		return response()->json($resp);
-	// 	}
-
-    //     if(isset($req->act) && $req->act=='save_booking'){
-    //         if(!isset($req->team_member) || $req->team_member==''){
-    //             $resp['status']='ERROR';
-    //             return response()->json($resp);
-    //         }
-
-    //         $team_member = $req->team_member;
-    //         $location = isset($req->location)?$req->location:'';
-    //         $av_from_date = isset($req->av_from_date)?$req->av_from_date:'';
-    //         $av_to_date = isset($req->av_to_date)?$req->av_to_date:'';
-    //         $av_from_time = isset($req->av_from_time)?$req->av_from_time:'';
-    //         $av_to_time = isset($req->av_to_time)?$req->av_to_time:'';
-    //         $av_from_day = isset($req->av_from_day)?$req->av_from_day:'';
-    //         $av_to_day = isset($req->av_to_day)?$req->av_to_day:'';
-    //         $av_serv_interval = isset($req->av_serv_interval)?$req->av_serv_interval:'';
-
-    //         $tm_avail = new Team_mem_availability;
-    //         $tm_avail->team_member = $team_member;
-    //         $tm_avail->location = $location;
-    //         $tm_avail->from_date = $av_from_date;
-    //         $tm_avail->to_date = $av_to_date;
-    //         $tm_avail->from_time = $av_from_time;
-    //         $tm_avail->to_time = $av_to_time;
-    //         $tm_avail->from_day = $av_from_day;
-    //         $tm_avail->to_day = $av_to_day;
-    //         $tm_avail->serv_interval = $av_serv_interval;
-    //         $tm_avail->save();
-
-    //         $resp['status']='SUCCESS';
-    //         $resp['i']=$tm_avail->id;
-    //         return response()->json($resp);
-    //     }
-
-       
-        
-
-    //     if(isset($req->act) && $req->act=='delete_booking'){
-    //         $prof_id = session('salon_id');
-    //         if($prof_id=='' || $prof_id=='0'){
-    //             $request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-    //             $resp['status'] = 'Login';
-    //             return response()->json($resp);
-    //         }
-
-    //         $ni = $req->id;
-
-
-    //         if($ni!='' && $ni!='0'){
-
-    //             DB::table('team_mem_availability')->where('id',$ni)->update(['status'=>'remove']);
-    //             $resp['status'] = 'SUCCESS';
-    //             return response()->json($resp);
-    //         }
-    //         else{
-    //             $resp['status'] = 'ERROR';
-    //             return response()->json($resp);
-    //         }
-    //     }
-
-    // }
-
 	public function client_list(Request $request){
         $prof_id = session('salon_id');
         if($prof_id=='' || $prof_id=='0'){
@@ -4408,10 +4113,38 @@ class SalonController extends Controller
 		return view('salon.client_list');
 	}
 	public function prof_messages(){
-		return view('salon.messages');
+		$prof_id = session('salon_id');
+		if($prof_id=='' || $prof_id=='0'){
+			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login');
+		}
+		$prof = Professional::find($prof_id);
+
+		/*$team_memb = "79";
+		$team_member = Prof_team_member::find($team_memb);*/
+		$all_team_member = Prof_team_member::where('status','active')->where('prof_id',$prof_id)->get();
+
+		$lang_kwords = $this->getLangKeywords();
+
+		return view('salon.messages')->with('prof',$prof)
+		/*->with('book_trans',$bookt)
+		->with('team_member',$team_member)*/
+		->with('lang_kwords', $lang_kwords);
 	}
 	public function payment_setting(){
-		return view('salon.payment_setting');
+
+		$prof_id = session('salon_id');
+		if($prof_id=='' || $prof_id=='0'){
+			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login');
+		}
+
+		$prof = Professional::find($prof_id);
+
+		$lang_kwords = $this->getLangKeywords();
+
+
+		return view('salon.payment_setting')->with('prof', $prof)->with('lang_kwords',$lang_kwords);
 	}
 	
 	
@@ -5135,9 +4868,6 @@ class SalonController extends Controller
 	}
 
 
-
-
-
 	//====================================//
 	//	------ DUTCH Language start------//
 	//====================================//
@@ -5174,12 +4904,7 @@ class SalonController extends Controller
 												->get();
 
 
-			$lang_kwords = Language_keyword::all();
-			$lang_kwords_ar = array();
-			foreach ($lang_kwords as $key => $value) {
-				$lang_kwords_ar[$value->keyword]['english']=$value->english;
-				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-			}
+			$lang_kwords = $this->getLangKeywords();
 
 			$uri  = $_SERVER['REQUEST_URI'];
 			$qs='';
@@ -5197,7 +4922,7 @@ class SalonController extends Controller
 			return view('salon.nl.nl_profile')->with('prof',$prof)
 							->with('fixed_loc_salon',$fixed_loc_salon)
 							->with('des_loc_salon',$des_loc_salon)
-							->with('lang_kwords',$lang_kwords_ar)
+							->with('lang_kwords',$lang_kwords)
 							->with('huri',$huri)
 							->with('municipality',$municipality)
 							->with('province',$province);
@@ -6759,12 +6484,7 @@ class SalonController extends Controller
 		}
 		else{
 
-			$lang_kwords = Language_keyword::all();
-			$lang_kwords_ar = array();
-			foreach ($lang_kwords as $key => $value) {
-				$lang_kwords_ar[$value->keyword]['english']=$value->english;
-				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-			}
+			$lang_kwords = $this->getLangKeywords();
 
 			$content = $this->get_page_content('nl','login');
 			$meta = $this->get_page_meta('nl','login');
@@ -6810,12 +6530,11 @@ class SalonController extends Controller
 							->with('meta_title',$meta_title)
 							->with('menuh',$menuh)
 							->with('menuf',$menuf)
-							->with('lang_kwords',$lang_kwords_ar);
+							->with('lang_kwords',$lang_kwords);
 
 			
 			// return view('salon.login');
 		}
 	}
-
 
 }

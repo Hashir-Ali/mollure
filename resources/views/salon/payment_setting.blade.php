@@ -1,4 +1,4 @@
-@include('salon/header')
+@include('salon/header1')
 <style type="text/css">
   .nav .nav-item .nav-link.active{
     border-width: 5px;

@@ -1,4 +1,4 @@
-@include('salon/header')
+@include('salon/header1')
 <head>
   
 <link
