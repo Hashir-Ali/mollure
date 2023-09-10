@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests;
-
+// Hi
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
