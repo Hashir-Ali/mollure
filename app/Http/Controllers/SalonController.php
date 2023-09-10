@@ -50,8 +50,6 @@ use \App\Mail\ManualMail;
 
 class SalonController extends Controller
 {
-
-
 	// utility functions almost required in every other method...
 	public function getLangKeywords(){
 		$lang_kwords = Language_keyword::all();
@@ -62,6 +60,25 @@ class SalonController extends Controller
 			}
 
 			return $lang_kwords_ar;
+	}
+	public function get_user_data($user_id, Request $req){
+		$prof_id = '0';
+
+		if($user_id !== ''){
+			// if coming from admin dashboard
+			$prof_id = $user_id;
+		}else{
+			// if normal user...
+			$prof_id = session('salon_id');
+		}
+		
+		if($prof_id=='' || $prof_id=='0'){
+			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login');
+		}
+
+
+		return Professional::find($prof_id);
 	}
 
 	// utility functions end here... 
@@ -626,21 +643,12 @@ class SalonController extends Controller
 
 	public function dashboard_o(Request $req)
 	{
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-
-		$prof = Professional::find($prof_id);
-
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		if($prof){
-
 			$fixed_loc_salon = Professional_template::where('type','f')
-												->where('prof_id',$prof_id)
+												->where('prof_id',$prof->id)
 												->where('status','!=','remove')
 												->get();
-
 			return view('salon.dashboard')->with('prof',$prof)->with('fixed_loc_salon',$fixed_loc_salon);
 		}
 		else{
@@ -651,22 +659,15 @@ class SalonController extends Controller
 
 	public function dashboard(Request $req)
 	{
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-
-
-		$prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		
 		if($prof){
 
-			$fixed_loc_salon = Fixed_location_salon::where('prof_id',$prof_id)
+			$fixed_loc_salon = Fixed_location_salon::where('prof_id',$prof->id)
 												->where('status','!=','remove')
 												->get();
 
-			$des_loc_salon = Desire_location::where('prof_id',$prof_id)
+			$des_loc_salon = Desire_location::where('prof_id',$prof->id)
 												->where('status','!=','remove')
 												->get();
 
@@ -706,34 +707,15 @@ class SalonController extends Controller
 
 	public function dashboardAdminUser(Request $req)
 	{
-		$prof_id = '0';
-
-		if($req->userId !== ''){
-			// if coming from admin dashboard
-			$prof_id = $req->userId;
-		}else{
-			// if normal user...
-			$prof_id = session('salon_id');
-		}
-		
-		if($prof_id=='' || $prof_id=='0'){
-			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-
-
-		$prof = Professional::find($prof_id);
-		
+		$prof = $this->get_user_data($req->userId, $req);
 		if($prof){
-
-			$fixed_loc_salon = Fixed_location_salon::where('prof_id',$prof_id)
+			$fixed_loc_salon = Fixed_location_salon::where('prof_id',$prof->id)
 												->where('status','!=','remove')
 												->get();
 
-			$des_loc_salon = Desire_location::where('prof_id',$prof_id)
+			$des_loc_salon = Desire_location::where('prof_id',$prof->id)
 												->where('status','!=','remove')
 												->get();
-
 
 			$uri  = $_SERVER['REQUEST_URI'];
 			$qs='';
@@ -763,7 +745,7 @@ class SalonController extends Controller
 							// ->with('all_municipality',$all_municipality);
 		}
 		else{
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
 			return redirect('login')->withErrors(['msg' => 'Something went wrong, please try again.']);
 		}
 	}
@@ -787,13 +769,14 @@ class SalonController extends Controller
         $facebook_link = $req->facebook_link;
         $youtube_link = $req->youtube_link;
 
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
+		// $prof_id = session('salon_id');
+		// if($prof_id=='' || $prof_id=='0'){
+		// 	$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+		// 	return redirect('login');
+		// }
 
-		$prof = Professional::find($prof_id);
+		// $prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		if(!$prof){
 			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
 			return redirect('login')->withErrors(['msg' => 'Something went wrong, please try again.']);
@@ -811,7 +794,7 @@ class SalonController extends Controller
 		//        dd($prof,$name_for_rating,$req->all());
         $prof->update();
 
-		$prof_add = Professional_address::where('prof_id',$prof_id)->first();
+		$prof_add = Professional_address::where('prof_id',$prof->id)->first();
 		isset($contact_person_first_name) ? $prof_add->contact_person_first_name = $contact_person_first_name : '';
 		isset($contact_person_last_name) ? $prof_add->contact_person_last_name = $contact_person_last_name : '';
 		isset($contact_number) ? $prof_add->contact_number=$contact_number : '';
@@ -851,13 +834,7 @@ class SalonController extends Controller
 		$password = $req->password;
 		$contact_number = $req->contact_number;
 		
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-
-		$prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		if(!$prof){
 			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
 			return redirect('login')->withErrors(['msg' => 'Something went wrong, please try again.']);
@@ -873,7 +850,7 @@ class SalonController extends Controller
 		$prof->vat = $vat;
 		$prof->update();*/
 
-		$prof_add = Professional_address::where('prof_id',$prof_id)->first();
+		$prof_add = Professional_address::where('prof_id',$prof->id)->first();
 		/*$prof_add->street = $street;
 		$prof_add->number = $number;
 		$prof_add->postal = $postal;
@@ -906,12 +883,7 @@ class SalonController extends Controller
 		$fixed_bio = $req->fixed_bio;
 		$fixed_pic = $req->file('fixed_pic');
 
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			echo 'ERR';
-		}
-
-		$prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('user_id'), $req);
 		if(!$prof){
 			echo 'ERR';
 		}
@@ -2651,12 +2623,7 @@ class SalonController extends Controller
 		$desire_bio = $req->desire_bio;
 		$desire_pic = $req->file('desire_pic');
 
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			echo 'ERR';
-		}
-
-		$prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		if(!$prof){
 			echo 'ERR';
 		}
@@ -3213,18 +3180,9 @@ class SalonController extends Controller
 	}
 
 
-	public function prof_calendar(){
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-		$prof = Professional::find($prof_id);
-
-		/*$team_memb = "79";
-		$team_member = Prof_team_member::find($team_memb);*/
-		$all_team_member = Prof_team_member::where('status','active')->where('prof_id',$prof_id)->get();
-
+	public function prof_calendar(Request $req){
+		$prof = $this->get_user_data(session('salon_id'), $req);
+		$all_team_member = Prof_team_member::where('status','active')->where('prof_id',$prof->id)->get();
 		$lang_kwords = $this->getLangKeywords();
 
 		// $bookt = Book_tran::where('team_member',$team_memb)->where('status','!=','cancel')->get();
@@ -3461,13 +3419,7 @@ class SalonController extends Controller
 
 	public function ajx_booking_detail(Request $req){
 
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return 'LOGIN';
-		}
-
-		$prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('salon_id'), $req);
 
 		if(isset($req->bi) && $req->bi!=''){
 			$book_id = $req->bi;
@@ -3494,13 +3446,13 @@ class SalonController extends Controller
 
 				$team = Prof_team_member::where('location_type','f')
 									->where('status','active')
-									->where('prof_id',$prof_id)
+									->where('prof_id',$prof->id)
 									->get();
 
-				$fix_loc = Fixed_location_salon::where('prof_id',$prof_id)
+				$fix_loc = Fixed_location_salon::where('prof_id',$prof->id)
         								->where('status','active')->get();
         		
-        		$des_loc = Desire_location::where('prof_id',$prof_id)
+        		$des_loc = Desire_location::where('prof_id',$prof->id)
         							->where('status','active')->get();
 
 				$ttl_serv_n = $booking->total_service;
@@ -4104,46 +4056,23 @@ class SalonController extends Controller
     }
 
 	public function client_list(Request $request){
-        $prof_id = session('salon_id');
-        if($prof_id=='' || $prof_id=='0'){
-            $request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-            return redirect('login');
-        }
-
+		$prof = $this->get_user_data(session('salon_id'), $request);
+		if(!$prof){
+			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login');
+		}
 		return view('salon.client_list');
 	}
-	public function prof_messages(){
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-		$prof = Professional::find($prof_id);
-
-		/*$team_memb = "79";
-		$team_member = Prof_team_member::find($team_memb);*/
-		$all_team_member = Prof_team_member::where('status','active')->where('prof_id',$prof_id)->get();
-
+	public function prof_messages(Request $request){
+		$prof = $this->get_user_data(session('salon_id'), $request);
+		$all_team_member = Prof_team_member::where('status','active')->where('prof_id',$prof->id)->get();
 		$lang_kwords = $this->getLangKeywords();
-
 		return view('salon.messages')->with('prof',$prof)
-		/*->with('book_trans',$bookt)
-		->with('team_member',$team_member)*/
 		->with('lang_kwords', $lang_kwords);
 	}
-	public function payment_setting(){
-
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-
-		$prof = Professional::find($prof_id);
-
+	public function payment_setting(Request $req){
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		$lang_kwords = $this->getLangKeywords();
-
-
 		return view('salon.payment_setting')->with('prof', $prof)->with('lang_kwords',$lang_kwords);
 	}
 	
@@ -4875,31 +4804,15 @@ class SalonController extends Controller
 
 	public function nl_dashboard(Request $req)
 	{
-
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
-
-
-		$prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		
 		if($prof){
 
-			/*$fixed_loc_salon = Nl_fixed_location_salon::where('prof_id',$prof_id)
+			$fixed_loc_salon = Fixed_location_salon::where('prof_id',$prof->id)
 												->where('status','!=','remove')
 												->get();
 
-			$des_loc_salon = Nl_desire_location::where('prof_id',$prof_id)
-												->where('status','!=','remove')
-												->get();*/
-
-			$fixed_loc_salon = Fixed_location_salon::where('prof_id',$prof_id)
-												->where('status','!=','remove')
-												->get();
-
-			$des_loc_salon = Desire_location::where('prof_id',$prof_id)
+			$des_loc_salon = Desire_location::where('prof_id',$prof->id)
 												->where('status','!=','remove')
 												->get();
 
@@ -4938,13 +4851,7 @@ class SalonController extends Controller
 		$fixed_name = $req->fixed_name;
 		$fixed_bio = $req->fixed_bio;
 		$fixed_pic = $req->file('fixed_pic');
-
-		$prof_id = session('salon_id');
-		if($prof_id=='' || $prof_id=='0'){
-			echo 'ERR';
-		}
-
-		$prof = Professional::find($prof_id);
+		$prof = $this->get_user_data(session('salon_id'), $req);
 		if(!$prof){
 			echo 'ERR';
 		}
@@ -4985,19 +4892,13 @@ class SalonController extends Controller
 			$prof_temp->update();
 
 		}else{
-
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				echo 'ERR';
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				echo 'ERR';
 			}
 
 			$prof_temp = new Nl_fixed_location_salon;
-			$prof_temp->prof_id = $prof_id;
+			$prof_temp->prof_id = $prof->id;
 			$prof_temp->salon_name = $salon_name;
 			$prof_temp->street = $street;
 			$prof_temp->number = $number;
@@ -5014,12 +4915,7 @@ class SalonController extends Controller
 		$resp = array();
 
 		if(isset($req->act) && $req->act=='info_verify'){
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				$resp['status'] = 'ERROR';
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				$resp['status'] = 'ERROR';
 			}
@@ -5093,17 +4989,12 @@ class SalonController extends Controller
         }
 
 		if(isset($req->act) && $req->act=='get_fix_loc_detail'){
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				echo 'ERR';
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				echo 'ERR';
 			}
 
-			$template_detail = Nl_template_note::where('prof_id',$prof_id)
+			$template_detail = Nl_template_note::where('prof_id',$prof->id)
 												->where('status','active')
 												->where('location_type','f')
 												->get();
@@ -5130,7 +5021,7 @@ class SalonController extends Controller
 
 			$team = Nl_prof_team_member::where('location_type','f')
 									->where('status','active')
-									->where('prof_id',$prof_id)
+									->where('prof_id',$prof->id)
 									->get();
 			$team_ar = array();
                 if($team && count($team)>0){
@@ -5176,7 +5067,7 @@ class SalonController extends Controller
 
 			$visual = Template_visual::where('location_type','f')
 									->where('status','active')
-									->where('prof_id',$prof_id)
+									->where('prof_id',$prof->id)
 									->get();
 
 			$categories = Category::where('status','active')
@@ -5193,22 +5084,15 @@ class SalonController extends Controller
 		}
 
 		if(isset($req->act) && $req->act=='get_des_loc_detail'){
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				echo 'ERR';
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				echo 'ERR';
 			}
 
-			$template_detail = Nl_template_note::where('prof_id',$prof_id)
+			$template_detail = Nl_template_note::where('prof_id',$prof->id)
 												->where('status','active')
 												->where('location_type','d')
-												->get();
-
-											
+												->get();					
 			$salon = array();
 			$salon['all_gender'] = 0;
 			$salon['men'] = 0;
@@ -5230,7 +5114,7 @@ class SalonController extends Controller
 
 			$team = Nl_prof_team_member::where('location_type','d')
 									->where('status','active')
-									->where('prof_id',$prof_id)
+									->where('prof_id',$prof->id)
 									->get();
 			$team_ar = array();
                 if($team && count($team)>0){
@@ -5272,7 +5156,7 @@ class SalonController extends Controller
 
 			$visual = Template_visual::where('location_type','d')
 									->where('status','active')
-									->where('prof_id',$prof_id)
+									->where('prof_id',$prof->id)
 									->get();
 
 			$categories = Category::where('status','active')
@@ -5353,15 +5237,7 @@ class SalonController extends Controller
 			$discount_valid_to = $payload['discount_valid_to'];
 			$discount_info = $payload['discount_info'];
 			$additional_info = $payload['additional_info'];
-
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				$resp['status'] = 'ERROR';
-				$resp['msg'] = 'login';
-				return response()->json($resp);
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				$resp['status'] = 'ERROR';
 				$resp['msg'] = 'login';
@@ -5374,7 +5250,7 @@ class SalonController extends Controller
 			}
 
 			$serv = new Nl_service;
-			$serv->prof_id = $prof_id;
+			$serv->prof_id = $prof->id;
 			$serv->location_type = $temp_type;
 			$serv->category_id = $category_id;
 			$serv->type = $type;
@@ -5402,7 +5278,7 @@ class SalonController extends Controller
 			$serv->additional_info = $additional_info;
 			$serv->save();
 
-			$this->set_prof_cate_nl($prof_id);
+			$this->set_prof_cate_nl($prof->id);
 
 			$resp['status'] = 'SUCCESS';
 			$resp['i'] = $serv->id;
@@ -5473,15 +5349,7 @@ class SalonController extends Controller
 		if(isset($req->act) && $req->act=='remove_service'){
 			$sid = (isset($req->sid) && $req->sid!='')?$req->sid:'';
 			if($sid!=''){
-
-				$prof_id = session('salon_id');
-				if($prof_id=='' || $prof_id=='0'){
-					$resp['status'] = 'ERROR';
-					$resp['msg'] = 'login';
-					return response()->json($resp);
-				}
-
-				$prof = Professional::find($prof_id);
+				$prof = $this->get_user_data(session('salon_id'), $req);
 				if(!$prof){
 					$resp['status'] = 'ERROR';
 					$resp['msg'] = 'login';
@@ -5490,7 +5358,7 @@ class SalonController extends Controller
 
 				DB::table('nl_services')->where('id', $sid)->delete();
 
-				$this->set_prof_cate_nl($prof_id);
+				$this->set_prof_cate_nl($prof->id);
 
 				$resp['status'] = 'SUCCESS';
 				return response()->json($resp);
@@ -5848,10 +5716,6 @@ class SalonController extends Controller
 
                         $serv_arr=array();
 
-                        // $cn_serv = unserialize($value->service);
-                        /*var_dump(count($cn_serv));
-                        die();*/
-
                         if($value->service!='' && unserialize($value->service)!==null && count(unserialize($value->service))>0){
                             $ser_ar = unserialize($value->service);
                             $servs = Nl_service::whereIn('id',$ser_ar)->get();  
@@ -5905,7 +5769,6 @@ class SalonController extends Controller
 		}
 
 		if(isset($req->act) && $req->act=='remove_visual'){
-			// $tm_i = $req->tmp_id;
 			$vis = $req->vis;
 			if($vis!='' && count($vis)>0){
 
@@ -6014,14 +5877,7 @@ class SalonController extends Controller
 
 		if(isset($req->act) && $req->act=='copy_desire'){
 			
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				$resp['status'] = 'ERROR';
-				$resp['msg'] = 'login';
-				return response()->json($resp);
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				$resp['status'] = 'ERROR';
 				$resp['msg'] = 'login';
@@ -6075,9 +5931,9 @@ class SalonController extends Controller
 			
 			if($req->temp_type=='f'){
 
-				$template_note=Nl_template_note::where('prof_id',$prof_id)->where('location_type','f')->first();
+				$template_note=Nl_template_note::where('prof_id',$prof->id)->where('location_type','f')->first();
 				if($template_note){
-					$chk=Nl_template_note::where('prof_id',$prof_id)->where('location_type','d')->first();
+					$chk=Nl_template_note::where('prof_id',$prof->id)->where('location_type','d')->first();
 					if(!$chk){
 						$new = $template_note->replicate();
 						$new->location_type = 'd';
@@ -6099,12 +5955,12 @@ class SalonController extends Controller
 					}
 				}
 
-				$services=Nl_service::where('prof_id',$prof_id)->where('location_type','f')->where('type','main')->where('status','active')->get();
+				$services=Nl_service::where('prof_id',$prof->id)->where('location_type','f')->where('type','main')->where('status','active')->get();
                 if(count($services)>0){
                     foreach ($services as $item) 
                     {
                     	$chk_serv = Nl_service::where('location_type','d')
-                    							->where('prof_id',$prof_id)
+                    							->where('prof_id',$prof->id)
                     							->where('category_id',$item->category_id)
                     							->where('service_name',$item->service_name)
                     							->where('duration',$item->duration)
@@ -6124,7 +5980,7 @@ class SalonController extends Controller
                     $this->set_prof_cate_nl($services[0]->prof_id);
                 }
 
-                $sb_services=Nl_service::where('prof_id',$prof_id)->where('location_type','f')->where('type','sub')->where('status','active')->get();
+                $sb_services=Nl_service::where('prof_id',$prof->id)->where('location_type','f')->where('type','sub')->where('status','active')->get();
                 if(count($sb_services)>0){
                     foreach ($sb_services as $item) 
                     {   
@@ -6135,7 +5991,7 @@ class SalonController extends Controller
                         }
 
                     	$chk_serv = Nl_service::where('location_type','d')
-                    							->where('prof_id',$prof_id)
+                    							->where('prof_id',$prof->id)
                     							->where('category_id',$item->category_id)
                     							->where('service_name',$item->service_name)
                     							->where('duration',$item->duration)
@@ -6158,11 +6014,11 @@ class SalonController extends Controller
 
 
 
-				$team_memb=Nl_prof_team_member::where('prof_id',$prof_id)->where('location_type','f')->where('status','active')->get();
+				$team_memb=Nl_prof_team_member::where('prof_id',$prof->id)->where('location_type','f')->where('status','active')->get();
 				if(count($team_memb)>0){
 					foreach ($team_memb as $item) 
 			        {
-			        	$chk_tm = Nl_prof_team_member::where('prof_id',$prof_id)
+			        	$chk_tm = Nl_prof_team_member::where('prof_id',$prof->id)
 			        								->where('location_type','d')
 			        								->where('member',$item->member)
 			        								->where('status','active')->count();
@@ -6177,11 +6033,11 @@ class SalonController extends Controller
 				}
 
 
-				$visual=Template_visual::where('prof_id',$prof_id)->where('location_type','f')->where('status','active')->get();
+				$visual=Template_visual::where('prof_id',$prof->id)->where('location_type','f')->where('status','active')->get();
 				if(count($visual)>0){
 					foreach ($visual as $item) 
 			        {
-			        	$chk_vis = Template_visual::where('prof_id',$prof_id)
+			        	$chk_vis = Template_visual::where('prof_id',$prof->id)
 			        							->where('location_type','d')
 			        							->where('visual',$item->visual)
 			        							->where('status','active')
@@ -6197,9 +6053,9 @@ class SalonController extends Controller
 				}
 			}
 			else{
-				$template_note=Nl_template_note::where('prof_id',$prof_id)->where('location_type','d')->first();
+				$template_note=Nl_template_note::where('prof_id',$prof->id)->where('location_type','d')->first();
 				if($template_note){
-					$chk=Nl_template_note::where('prof_id',$prof_id)->where('location_type','f')->first();
+					$chk=Nl_template_note::where('prof_id',$prof->id)->where('location_type','f')->first();
 					if(!$chk){
 						$new = $template_note->replicate();
 						$new->location_type = 'f';
@@ -6219,13 +6075,13 @@ class SalonController extends Controller
 					}
 				}
 
-				$services=Nl_service::where('prof_id',$prof_id)->where('location_type','d')->where('type','main')->where('status','active')->get();
+				$services=Nl_service::where('prof_id',$prof->id)->where('location_type','d')->where('type','main')->where('status','active')->get();
 
                 if(count($services)>0){
                     foreach ($services as $item) 
                     {
                     	$chk_serv = Nl_service::where('location_type','f')
-                    							->where('prof_id',$prof_id)
+                    							->where('prof_id',$prof->id)
                     							->where('category_id',$item->category_id)
                     							->where('service_name',$item->service_name)
                     							->where('duration',$item->duration)
@@ -6245,7 +6101,7 @@ class SalonController extends Controller
                     $this->set_prof_cate_nl($services[0]->prof_id);
                 }
 
-                $sb_services=Nl_service::where('prof_id',$prof_id)->where('location_type','d')->where('type','sub')->where('status','active')->get();
+                $sb_services=Nl_service::where('prof_id',$prof->id)->where('location_type','d')->where('type','sub')->where('status','active')->get();
                 if(count($sb_services)>0){
                     foreach ($sb_services as $item) 
                     {   
@@ -6256,7 +6112,7 @@ class SalonController extends Controller
                         }
 
                     	$chk_serv = Nl_service::where('location_type','f')
-                    							->where('prof_id',$prof_id)
+                    							->where('prof_id',$prof->id)
                     							->where('category_id',$item->category_id)
                     							->where('service_name',$item->service_name)
                     							->where('duration',$item->duration)
@@ -6280,11 +6136,11 @@ class SalonController extends Controller
 
 
 
-				$team_memb=Nl_prof_team_member::where('prof_id',$prof_id)->where('location_type','d')->where('status','active')->get();
+				$team_memb=Nl_prof_team_member::where('prof_id',$prof->id)->where('location_type','d')->where('status','active')->get();
 				if(count($team_memb)>0){
 					foreach ($team_memb as $item) 
 			        {
-			        	$chk_tm = Nl_prof_team_member::where('prof_id',$prof_id)
+			        	$chk_tm = Nl_prof_team_member::where('prof_id',$prof->id)
 			        								->where('location_type','d')
 			        								->where('member',$item->member)
 			        								->where('status','active')->count();
@@ -6299,11 +6155,11 @@ class SalonController extends Controller
 				}
 
 
-				$visual=Template_visual::where('prof_id',$prof_id)->where('location_type','d')->where('status','active')->get();
+				$visual=Template_visual::where('prof_id',$prof->id)->where('location_type','d')->where('status','active')->get();
 				if(count($visual)>0){
 					foreach ($visual as $item) 
 			        {
-			        	$chk_vis = Template_visual::where('prof_id',$prof_id)
+			        	$chk_vis = Template_visual::where('prof_id',$prof->id)
 			        							->where('location_type','f')
 			        							->where('visual',$item->visual)
 			        							->where('status','active')
@@ -6325,22 +6181,15 @@ class SalonController extends Controller
 		}
 
 		if(isset($req->act) && $req->act=='get_cate_serv'){
-            $prof_id = session('salon_id');
             $temp_type=$req->temp_type;
-            if($prof_id=='' || $prof_id=='0'){
-                $resp['status'] = 'ERROR';
-                $resp['msg'] = 'login';
-                return response()->json($resp);
-            }
-
-            $prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
             if(!$prof){
                 $resp['status'] = 'ERROR';
                 $resp['msg'] = 'login';
                 return response()->json($resp);
             }
          
-            $service = Nl_service::where('prof_id',$prof_id)
+            $service = Nl_service::where('prof_id',$prof->id)
                                 ->where('status','active')
                                 ->where('location_type',$temp_type)
                                 // ->where('type','main')
@@ -6389,17 +6238,12 @@ class SalonController extends Controller
 	
 		$resp = array();
 		if($req->act=='add_province'){
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				echo 'ERR';
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				echo 'ERR';
 			}
 			$prof_temp = new Nl_desire_location;
-			$prof_temp->prof_id = $prof_id;
+			$prof_temp->prof_id = $prof->id;
 			
 			$loc_type = $req->loc_type;
 
@@ -6417,29 +6261,18 @@ class SalonController extends Controller
 					$prof_temp->save();
 				}
 
-				DB::table('nl_desire_locations')->where('prof_id',$prof_id)->where('desire_location_type','everywhere')->update(['status'=>'remove']);
+				DB::table('nl_desire_locations')->where('prof_id',$prof->id)->where('desire_location_type','everywhere')->update(['status'=>'remove']);
 			}
 			else{
 				$prof_temp->desire_province = 'Everywhere';
 				$prof_temp->save();
-
-				// DB::table('desire_locations')->where('prof_id',$prof_id)->where('desire_location_type','specific')->update(['status'=>'remove']);
 			}
-
-			
-
 			$resp['status']='SUCCESS';
 			return response()->json($resp);
 		}
 
 		if($req->act=='edit_province'){
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				$resp['status']='ERROR';
-				return response()->json($resp);
-			}
-
-			$prof = Professional::find($prof_id);
+			$prof = $this->get_user_data(session('salon_id'), $req);
 			if(!$prof){
 				$resp['status']='ERROR';
 				return response()->json($resp);
@@ -6466,14 +6299,7 @@ class SalonController extends Controller
 
 	public function nl_login(Request $request){
 		if ($request->session()->has('salon_login') && $request->session()->get('salon_login')=='1') {
-			$prof_id = session('salon_id');
-			if($prof_id=='' || $prof_id=='0'){
-				$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-				return redirect('login');
-			}
-
-			$prof = Professional::find($prof_id);
-
+			$prof = $this->get_user_data(session('salon_id'), $request);
 			if($prof){
 				return redirect()->route('dashboard');
 			}
@@ -6531,9 +6357,6 @@ class SalonController extends Controller
 							->with('menuh',$menuh)
 							->with('menuf',$menuf)
 							->with('lang_kwords',$lang_kwords);
-
-			
-			// return view('salon.login');
 		}
 	}
 

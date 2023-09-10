@@ -515,7 +515,7 @@ ul.my_navbar li .dropdown-menu li a:hover {
                 @if($prof->user_type == "company" || $prof->user_type == "individual")
                     <li><a href="{{route('bookings')}}">Booking</a></li>
                     <li><a href="{{route('prof_messages')}}">Inbox</a></li>
-                    <li><a href="{{route('favorites')}}">Favourites</a></li>
+                    <li><a href="{{route('my_favorites')}}">Favourites</a></li>
                 @else
                      @if(Route::currentRouteName() == 'prof_calendar')
                         <li class="active"><a href="{{route('prof_calendar')}}">Calendar</a></li>
