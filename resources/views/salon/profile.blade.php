@@ -564,8 +564,6 @@
 {{--</div>--}}
 <!--Tabs End-->
 
-<h1>{{route('salon_ajx')}}</h1>
-
 <div class="container">
     <div class="d-flex border-custom mb-3">
         @if($prof->user_type == "professional")
