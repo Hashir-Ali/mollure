@@ -204,6 +204,8 @@ class SalonController extends Controller
 
 	public function profile_save(Request $req)
 	{
+
+		
 		$legal_name = $req->legal_name;
 		$coc = $req->coc;
 		$vat = $req->vat;
@@ -228,8 +230,11 @@ class SalonController extends Controller
 		$preferred_lang = $req->preferred_lang;
 		$user_type = $req->user_type;
 		$dob = $req->dob;
-		$name_for_rating = $req->name_for_rating;
-
+		if($req->user_type == 'professional' || $req->user_type == 'company'){
+			$name_for_rating = $req->legal_name;
+		}else{
+			$name_for_rating = $req->name_for_rating;
+		}
 		$chk_p = Professional::where('email',$email)->where('user_type',$user_type)->get();
 		if(count($chk_p)>0){
 			return 'email';

@@ -56,6 +56,7 @@
                             <select name="name_for_rating" class="mollure-select">
                                 <option value="first_name"> {{$lang_kwords['first-name']['english']}}</option>
                                 <option value="last_name">{{$lang_kwords['last-name']['english']}} </option>
+                                <option value="first_and_last_name">{{$lang_kwords['first-name']['english']}} and {{$lang_kwords['last-name']['english']}} </option>
                             </select>
                             <span class="err_spn name_for_rating_err">Please {{$lang_kwords['select']['english']}} {{$lang_kwords['gender']['english']}}</span>
                         </label>
