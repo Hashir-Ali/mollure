@@ -49,6 +49,13 @@
                     </div>
 
                     <div class="">
+                        <label for="profile_pic" class="form-label">
+                            Profile Pic:
+                        </label>
+                        <input type="file" class="form-control" name="profile_pic" require="false"/>
+                    </div>
+
+                    <div class="">
                         <div>
                             <label class="form-label">Name For Rating And Review</label>
                         </div>
@@ -105,14 +112,29 @@
                         </div>
                     </div>
 
-                    <div class="d-flex service_for_checkbox_container justify-content-between align-content-center mb-4 mt-2">
+                    <div class="d-flex service_for_checkbox_container justify-content-between align-content-center mt-2">
                         <div class="d-flex justify-content-between align-content-center gap-2">
                             <label class="custom_check form-check-label" for="term_condition">
                                 <input class="me-3 serv_for_fx_inp" type="checkbox" value="1" id="term_condition" />&nbsp;<span class="checkmark"></span>
                             </label>
-                            <p>Accept our <label form="term_condition" class="text-decoration-underline tnc"><a href="{{route('term_condition')}}" target="_blank">Terms & conditions</a></label></p>
+                            <p>Accept our 
+                                <label form="term_condition" class="text-decoration-underline tnc">
+                                    <a href="{{route('term_condition')}}" target="_blank">Terms & conditions</a>
+                                </label>
+                            </p>
                             <span class="err_spn term_condition_err">Please accept our conditions</span>
+                            <br />
+                            
                         </div>
+
+                        
+                    </div>
+                    <div class="d-flex service_for_checkbox_container justify-content-between align-content-center mb-4 mt-2">
+                        <p>
+                            <label form="term_condition" class="tnc" for="subscribe_to_newsletter">
+                                <input class="checkmark" style="opacity: 1; padding-left: 200px;" type="checkbox" name="subscribe_to_newsletter" id="subscribe_to_newsletter" value="1" checked> Subscribe to Newsletter
+                            </label>
+                        </p>
                     </div>
                     <button class="btn btn-primary mt-1"  type="button" name="form_submit" id="form_submit" value="Submit" onclick="form_validate()">{{$lang_kwords['submit']['english']}}</button>
                 </form>
@@ -289,12 +311,3 @@
         }
     </script>
 @endsection
-
-
-
-
-
-
-
-
-

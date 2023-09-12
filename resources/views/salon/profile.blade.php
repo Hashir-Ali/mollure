@@ -575,14 +575,14 @@
             </div>
         @else
             <div class="w-100 border-end up_tab">
-                <div class="uinfo_card @if($prof->status!='approve') active @endif text-custom-dark fw-custom-bold fs-5 text-center cursor-pointer" onclick="show_userinfo_sec()">{{$lang_kwords['user_info']['english']}}</div>
+                <div class="uinfo_card @if($prof->status=='approve') active @endif text-custom-dark fw-custom-bold fs-5 text-center cursor-pointer" onclick="show_userinfo_sec()">{{$lang_kwords['user_info']['english']}}</div>
             </div>
         @endif
     </div>
 </div>
 
 <!--Professional Profile Start-->
-<div class="mb-4 info_form" style="@if($prof->status=='approve') display:none; @endif padding: 0px 75px!important" >
+<div class="mb-4 info_form" style="@if($prof->status!=='approve') display:none; @endif padding: 0px 75px!important" >
     <div class="accordion">
         <div class="accordion-item border-0 rounded">
             <input type="hidden" id="csrf-token" value="{{ Session::token() }}" />
@@ -842,7 +842,7 @@
     </div>
 </div>
 <!--Professional Profile End-->
-@if($prof->status=='approve')
+@if($prof->status=='approve' && $prof->user_type == "professional")
     <!--Professional Template Start-->
     <div class="container mb-4 protemp_form">
         <div class="accordion">
@@ -1459,9 +1459,9 @@
                                 <!--Visual End-->
 
 
-{{--                                <div class="container general-note-container mb-5 text-center">--}}
-{{--                                    <input type="button" value="Copy to Location" class="btn btn-primary rounded-pill" id="copy_btn" onclick="copy_desire()">--}}
-{{--                                </div>--}}
+                            {{--                                <div class="container general-note-container mb-5 text-center">--}}
+                            {{--                                    <input type="button" value="Copy to Location" class="btn btn-primary rounded-pill" id="copy_btn" onclick="copy_desire()">--}}
+                            {{--                                </div>--}}
 
                             </div>
                         </div>

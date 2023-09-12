@@ -46,7 +46,9 @@
                                       <option value="emailverified_ENG" @if($temp=='emailverified_ENG') selected @endif>Email Verified ENG</option>
                                       <option value="emailverified_NL" @if($temp=='emailverified_NL') selected @endif>Email Verified NL</option>
                                       <option value="step2_validated_ENG" @if($temp=='step2_validated_ENG') selected @endif>Step2 Validated ENG</option>
+                                      <option value="step2_rejected_ENG" @if($temp=='step2_rejected_ENG') selected @endif>Step2 Rejected ENG</option>
                                       <option value="step2_validated_NL" @if($temp=='step2_validated_NL') selected @endif>Step2 Validated NL</option>
+                                      <option value="step2_rejected_NL" @if($temp=='step2_rejected_NL') selected @endif>Step2 Rejected NL</option>
                                       <option value="static" @if($temp=='static') selected @endif>Static</option>
                                       <option value="forgot_password_eng" @if($temp=='forgot_password_eng') selected @endif>Forgot Password ENG</option>
                                       <option value="forgot_password_nl" @if($temp=='forgot_password_nl') selected @endif>Forgot Password NL</option>

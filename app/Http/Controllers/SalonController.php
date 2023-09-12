@@ -47,6 +47,7 @@ use \App\Blocked_Time;
 use Mail;
 use \App\Mail\ProfessionalMails;
 use \App\Mail\ManualMail;
+use App\Models\MailingList;
 
 class SalonController extends Controller
 {
@@ -196,7 +197,6 @@ class SalonController extends Controller
                 ->with('menuf',$menuf)
                 ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
-
 			}
             
         }
@@ -204,8 +204,6 @@ class SalonController extends Controller
 
 	public function profile_save(Request $req)
 	{
-
-		
 		$legal_name = $req->legal_name;
 		$coc = $req->coc;
 		$vat = $req->vat;
@@ -230,11 +228,21 @@ class SalonController extends Controller
 		$preferred_lang = $req->preferred_lang;
 		$user_type = $req->user_type;
 		$dob = $req->dob;
+		
 		if($req->user_type == 'professional' || $req->user_type == 'company'){
 			$name_for_rating = $req->legal_name;
 		}else{
-			$name_for_rating = $req->name_for_rating;
+			if($req->name_for_rating == 'first_name'){
+				$name_for_rating = $req->first_name;
+			}elseif($req->name_for_rating == 'last_name'){
+				$name_for_rating = $req->last_name;
+			}elseif($req->name_for_rating == 'first_and_last_name'){
+				$name_for_rating = $req->first_name. " ".$req->last_name;
+			}else{
+				$name_for_rating = $req->name_for_rating;
+			}
 		}
+
 		$chk_p = Professional::where('email',$email)->where('user_type',$user_type)->get();
 		if(count($chk_p)>0){
 			return 'email';
@@ -256,6 +264,25 @@ class SalonController extends Controller
 		$prof->user_type = $user_type;
 		$prof->name_for_rating = $name_for_rating;
 		$prof->dob = $dob;
+
+		
+		// check uploaded profile pic for IC and CC users..
+		if($user_type !== 'professional'){
+			// desire pic becomes profile picture for IC and CC users...
+			$docs = $req->file('profile_pic');
+			if($docs && $docs !== ''){
+				$name = rand(0,100).time().'.'.$docs->getClientOriginalExtension();
+				$destinationPath = public_path('/imgs/docs');
+				$docs->move($destinationPath, $name);
+
+				$destinationPath1 = config('app.url').'/public/imgs/docs/'.$name;
+
+				$prof->desire_pic = $destinationPath1;
+			}
+		}
+		
+
+
 		$prof->save();
 
 		$prof_id = $prof->id;
@@ -286,6 +313,18 @@ class SalonController extends Controller
         }*/
         $prof_add->save();
 
+
+		// Check if email subscription checkbox is checked
+		$subscribeToNewsletter = $req->input('subscribe_to_newsletter') ? true : false;
+
+		$mailSubscriber = new MailingList([
+			'email' => $email,
+			'name' => $name_for_rating,
+		]);
+
+		// add to the mailing list..
+		$mailSubscriber->save();
+		
         if (!empty($registration_docs)){
             foreach ($registration_docs as $key => $registration_doc) {
                 /*$name = rand(0,100).time().'.'.$registration_doc->getClientOriginalExtension();
@@ -813,6 +852,21 @@ class SalonController extends Controller
 		if(!$prof){
 			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
 			return redirect('login')->withErrors(['msg' => 'Something went wrong, please try again.']);
+		}
+
+		// check uploaded profile pic for IC and CC users..
+		if($req->user_type !== 'professional'){
+			// desire pic becomes profile picture for IC and CC users...
+			$docs = $req->file('profile_pic');
+			if($docs && $docs !== ''){
+				$name = rand(0,100).time().'.'.$docs->getClientOriginalExtension();
+				$destinationPath = public_path('/imgs/docs');
+				$docs->move($destinationPath, $name);
+
+				$destinationPath1 = config('app.url').'/public/imgs/docs/'.$name;
+
+				$prof->desire_pic = $destinationPath1;
+			}
 		}
 		
 		if($password!=''){

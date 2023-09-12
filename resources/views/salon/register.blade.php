@@ -91,7 +91,7 @@
 						<label for="uploadfile" class="form-label"> {{$lang_kwords['professional-must-provide-documentation-of-registration-in-chamber-of-commerce']['english']}}</label>
 						<input type="file" id="uploadfile" hidden />
 						<div class="custom-file-select">
-							<label class="chosefile" for="registration_doc"><img src="{{ url("public/images/upload.svg") }}" alt="Upload Doc" srcset=""></label>
+							<label class="chosefile" for="registration_doc"><img src="{{ url('public/images/upload.svg') }}" alt="Upload Doc" srcset=""></label>
 							<label id="file-chosen">No file chosen</label>
 						</div>
 						<!-- <input type="file" class="form-control" id="uploadfile"> -->
@@ -163,7 +163,7 @@
 						</div>
 					</div>
 
-					<div class="d-flex service_for_checkbox_container justify-content-between align-content-center mb-4 mt-2">
+					<div class="d-flex service_for_checkbox_container justify-content-between align-content-center mt-2">
 						<div class="d-flex justify-content-between align-content-center gap-2">
 							<label class="custom_check form-check-label" for="term_condition">
 								<input class="me-3 serv_for_fx_inp" type="checkbox" value="1" id="term_condition" />&nbsp;<span class="checkmark"></span>
@@ -172,6 +172,13 @@
 							<span class="err_spn term_condition_err">Please accept our conditions</span>
 						</div>
 					</div>
+					<div class="d-flex service_for_checkbox_container justify-content-between align-content-center mb-4 mt-2">
+                        <p>
+                            <label form="term_condition" class="tnc" for="subscribe_to_newsletter">
+                                <input class="checkmark" style="opacity: 1; padding-left: 200px;" type="checkbox" name="subscribe_to_newsletter" id="subscribe_to_newsletter" value="1" checked> Subscribe to Newsletter
+                            </label>
+                        </p>
+                    </div>
 					<button class="btn btn-primary mt-1"  type="button" name="form_submit" id="form_submit" value="Submit" onclick="form_validate()">{{$lang_kwords['submit']['english']}}</button>
 				</form>
 				<div>

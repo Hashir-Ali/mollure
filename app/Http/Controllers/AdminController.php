@@ -407,8 +407,38 @@ class AdminController extends Controller
             DB::table('professionals')
               ->where('id', $prof_id)
               ->update(['status' => $status]);
+            // send email notification stating user info was approved...
+            $prof = Professional::select('id','email','legal_name','coc','vat','phone','email_verified','rand_num','preferred_lang')->where('id',$prof_id)->get();
+			if($prof && count($prof)>0){
+                // based on user_type select specific template for step2 approval...
+                // professional shall receive proceed to step3 template...
+                // company clients shall receive info approved...
+                // currently info approved email template selected...
+                if($status == 'approved'){
+                    if($prof[0]->preferred_lang=='NL'){
+                        $email_template = Email_template::where('email_type','step2_validated_NL')->get();
+                    }else{
+                        $email_template = Email_template::where('email_type','step2_validated_ENG')->get();
+                    }
+                }else{
+                    // fetch info rejected e-mail template...
+                    if($prof[0]->preferred_lang=='NL'){
+                        $email_template = Email_template::where('email_type','step2_rejected_NL')->get();
+                    }else{
+                        $email_template = Email_template::where('email_type','step2_rejected_ENG')->get();
+                    }
+                }
+                
+                $email_content = $email_template[0]->msg;
+                $subject = $email_template[0]->subject;
 
-            $resp['status']='SUCCESS';
+                $this->send_mail($email_content, $subject, [$prof_id]);
+                
+                $resp['status']='SUCCESS';
+            }else{
+                $resp['status']='ERROR';
+            }
+            
             return response()->json($resp);  
         }
 
@@ -1785,6 +1815,7 @@ class AdminController extends Controller
 
     public function approve_detail(){
         DB::table('professionals')->update(['desire_info'=>'1','fixed_info'=>'1',]);
+
         return redirect()->route('admin_dashboard');
     }   
 
@@ -4133,6 +4164,127 @@ class AdminController extends Controller
 
                 Email_log::insert($email_logs);
             }
+        }
+
+        if($emails == 1){
+            $resp['status']='SUCCESS';
+            $resp['msg']='Mail sent';
+            return response()->json($resp);
+        }
+        else{
+            $resp['status']='ERROR';
+            $resp['msg']='No professional selected';
+            return response()->json($resp);
+        }
+
+    }
+
+    public function send_mail($email_content, $subject, $professional){
+        
+        // this method might not support sending static emails.
+
+
+        // $email_content = $req->msg;
+        // $subject = $req->subject;
+        // $professional = $req->professional;
+        // $template = $req->template;
+        $resp=array();
+        $email_logs=array();
+        $emails=0;
+
+        if(!empty($professional) && intval($professional)>0){
+            $emails = 1;
+
+            $prof = Professional::whereIn('id',$professional)->get();
+
+            foreach ($prof as $key => $value) {
+                
+                try {
+
+                    $legal_name = $value->legal_name;
+                    $coc = $value->coc;
+                    $vat = $value->vat;
+                    $email = $value->email;
+                    $fixed_name = $value->fixed_name;
+                    $desire_name = $value->desire_name;
+                    $contact_number = $value->prof_address[0]->contact_number;
+                    $contact_person_first_name = $prof[0]->prof_address[0]->contact_person_first_name;
+                    $contact_person_last_name = $prof[0]->prof_address[0]->contact_person_last_name;
+                    
+                    $fx_ds_lg_name='';
+                    if(trim($fixed_name)!=''){
+                        $fx_ds_lg_name = $fixed_name;
+                    }
+                    else if(trim($desire_name)!=''){
+                        $fx_ds_lg_name = $desire_name;
+                    }
+                    else if(trim($legal_name)!=''){
+                        $fx_ds_lg_name = $legal_name;
+                    }
+                    else{
+                        $fx_ds_lg_name='Professional';
+                    }
+
+                    $fx_ds_name='';
+                    if(trim($fixed_name)!=''){
+                        $fx_ds_name = $fixed_name;
+                    }
+                    else if(trim($desire_name)!=''){
+                        $fx_ds_name = $desire_name;
+                    }
+                    else{
+                        $fx_ds_name='Professional';
+                    }
+
+                    $email_content = str_replace('##pro_legal_name##', $legal_name, $email_content);
+                    $email_content = str_replace('##pro_email##', $email, $email_content);
+                    $email_content = str_replace('##pro_phone##', $contact_number, $email_content);
+                    $email_content = str_replace('##pro_coc##', $coc, $email_content);
+                    $email_content = str_replace('##pro_vat##', $vat, $email_content);
+                    $email_content = str_replace('##contact_person_first_name##', $contact_person_first_name, $email_content);
+                    $email_content = str_replace('##contact_person_last_name##', $contact_person_last_name, $email_content);
+                    $email_content = str_replace('##pro_fx_ds_lg_name##', $fx_ds_lg_name, $email_content);
+                    $email_content = str_replace('##pro_fx_ds_name##', $fx_ds_name, $email_content);
+
+                    $subject = str_replace('##pro_legal_name##', $legal_name, $subject);
+                    $subject = str_replace('##pro_email##', $email, $subject);
+                    $subject = str_replace('##pro_phone##', $contact_number, $subject);
+                    $subject = str_replace('##pro_coc##', $coc, $subject);
+                    $subject = str_replace('##pro_vat##', $vat, $subject);
+                    $subject = str_replace('##contact_person_first_name##', $contact_person_first_name, $subject);
+                    $subject = str_replace('##contact_person_last_name##', $contact_person_last_name, $subject);
+                    $subject = str_replace('##pro_fx_ds_lg_name##', $fx_ds_lg_name, $subject);
+                    $subject = str_replace('##pro_fx_ds_name##', $fx_ds_name, $subject);
+
+                    $objDemo = new \stdClass();
+                    $objDemo->content=$email_content;
+                    $objDemo->subject=$subject;
+                    
+                    $resp['step1']='DONE';
+
+                    // $email = 'jonsain.official@gmail.com';
+                    Mail::to($email)->send(new ManualMail($objDemo));
+                    $resp['step2']='DONE';
+
+                    $arr = array();
+
+                    $arr['from_address'] = config('app.MAIL_FROM_ADDRESS');
+                    $arr['to_address'] = $email;
+                    $arr['subject'] = $subject;
+                    $arr['content'] = $email_content;
+                    $arr['type'] = "manual";
+                    $arr['script'] = basename(__FILE__);
+
+                    $email_logs[]=$arr;
+
+                } catch (\Exception $e) {
+                    $resp['step3']=$e->getMessage();
+                    continue;
+                }
+            }
+
+            Email_log::insert($email_logs);
+
         }
 
         if($emails == 1){
