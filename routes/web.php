@@ -37,9 +37,7 @@ Route::post('upload', [HomeController::class, 'upload_image'])->name('upload_ima
 
 
 Route::get('{lang}/register', [SalonController::class, 'intersection_register']);
-// Route::get('nl/register', [SalonController::class, 'intersection_register_nl']);
 Route::get('{user_type}/{lang}/register', [SalonController::class, 'register']);
-// Route::get('{user_type}/nl/register', [SalonController::class, 'register_nl']);
 Route::post('register', [SalonController::class, 'profile_save'])->name('profile_save');
 Route::get('login', [SalonController::class, 'login'])->name('login');
 Route::post('login', [SalonController::class, 'login_post'])->name('login_post');

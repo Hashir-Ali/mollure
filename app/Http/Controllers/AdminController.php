@@ -1810,8 +1810,7 @@ class AdminController extends Controller
                             ->where('status','approve')
                             ->where('fixed_info','!=','2')
                             ->orderBy('id','desc')->get();
-
-        // echo($prof);
+                            
         return view('admin.prof_serv_list')
                                 ->with('professional',$prof)
                                 ->with('status',$status);
