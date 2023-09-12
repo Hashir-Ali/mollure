@@ -50,19 +50,19 @@
             <span></span>
         </div>
         <div class="d-grid gap-3 justify-content-center interCardGroup">
-            <a class="interCard d-grid px-4 align-content-center" href="{{ url("individual/nl/register") }}">
+            <a class="interCard d-grid px-4 align-content-center" href="{{ url('individual/nl/register') }}">
                 <div>
                     <h4>For Individual client</h4>
                     <p>By hitting Login, Lorem Ipsum Sit Omet Domet</p>
                 </div>
             </a>
-            <a class="interCard d-grid px-4 align-content-center" href="{{ url("company/nl/register") }}">
+            <a class="interCard d-grid px-4 align-content-center" href="{{ url('company/nl/register') }}">
                 <div>
                     <h4>For Company client</h4>
                     <p>By hitting Login, Lorem Ipsum Sit Omet Domet</p>
                 </div>
             </a>
-            <a class="interCard d-grid px-4 align-content-center" href="{{ url("professional/nl/register") }}">
+            <a class="interCard d-grid px-4 align-content-center" href="{{ url('professional/nl/register') }}">
                 <div>
                     <h4>For Professional</h4>
                     <p>By hitting Login, Lorem Ipsum Sit Omet Domet</p>

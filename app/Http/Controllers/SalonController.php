@@ -83,18 +83,16 @@ class SalonController extends Controller
 
 	// utility functions end here... 
 
-    public function intersection_register(){
-        return view('intersection_register');
+    public function intersection_register($lang='en'){
+		if($lang== 'nl'){
+			return view('intersection_register_nl');
+		}else{
+			return view('intersection_register');
+		}
+        
     }
 
-
-    public function intersection_register_nl(){
-        return view('intersection_register_nl');
-    }
-
-
-
-    public function register($user_type){
+    public function register($user_type, $lang='en'){
         $uri  = $_SERVER['REQUEST_URI'];
         $qs='';
         if(strpos($uri, '?') !== false){
@@ -106,18 +104,21 @@ class SalonController extends Controller
 
         $lang_kwords = $this->getLangKeywords();
 
-        $content = $this->get_page_content('en','register');
-        $meta = $this->get_page_meta('en','register');
-        $menuh = $this->get_page_menu('header','en');
-        $menuf = $this->get_page_menu('footer','en');
+        $content = $this->get_page_content($lang,'register');
+        $meta = $this->get_page_meta($lang,'register');
+        $menuh = $this->get_page_menu('header',$lang);
+        $menuf = $this->get_page_menu('footer', $lang);
 
         $data = array();
         if($content && count($content)>0){
             foreach ($content as $key => $value) {
                 // $ar = array();
                 $data[$value->section]['image'] = $value->image;
-                $data[$value->section]['content'] = $value->content_en;
-
+				if($lang === 'en'){
+					$data[$value->section]['content'] = $value->content_en;
+				}else{
+					$data[$value->section]['content'] = $value->content_nl;
+				}
                 if(count($value->get_sub_content)>0){
                     $data[$value->section]['sub_content'] = $value->get_sub_content;
                 }
@@ -133,7 +134,9 @@ class SalonController extends Controller
         $province = Province::where('status','active')->orderBy('name','ASC')->get();
 
         if ($user_type == "professional"){
-            return view('salon.register')->with('huri',$huri)
+
+			if($lang === 'en'){
+				return view('salon.register')->with('huri',$huri)
                 ->with('contents',$data)
                 ->with('page_title',$page_title)
                 ->with('meta_title',$meta_title)
@@ -141,8 +144,20 @@ class SalonController extends Controller
                 ->with('menuf',$menuf)
                 ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
+			}else{
+				return view('salon.nl.nl_register')->with('huri',$huri)
+                ->with('contents',$data)
+                ->with('page_title',$page_title)
+                ->with('meta_title',$meta_title)
+                ->with('menuh',$menuh)
+                ->with('menuf',$menuf)
+                ->with('lang_kwords',$lang_kwords)
+                ->with('province',$province);
+			}
+            
         }elseif ($user_type == "individual"){
-            return view('salon.individual_register')->with('huri',$huri)
+			if($lang === 'en'){
+				return view('salon.individual_register')->with('huri',$huri)
                 ->with('contents',$data)
                 ->with('page_title',$page_title)
                 ->with('meta_title',$meta_title)
@@ -150,8 +165,21 @@ class SalonController extends Controller
                 ->with('menuf',$menuf)
                 ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
+			}else{
+				//netherland's dutch language...
+				return view('salon.nl.nl_individual_register')->with('huri',$huri)
+                ->with('contents',$data)
+                ->with('page_title',$page_title)
+                ->with('meta_title',$meta_title)
+                ->with('menuh',$menuh)
+                ->with('menuf',$menuf)
+                ->with('lang_kwords',$lang_kwords)
+                ->with('province',$province);
+			}
+            
         }elseif ($user_type == "company"){
-            return view('salon.company_register')->with('huri',$huri)
+			if($lang === 'en'){
+				return view('salon.company_register')->with('huri',$huri)
                 ->with('contents',$data)
                 ->with('page_title',$page_title)
                 ->with('meta_title',$meta_title)
@@ -159,78 +187,20 @@ class SalonController extends Controller
                 ->with('menuf',$menuf)
                 ->with('lang_kwords',$lang_kwords)
                 ->with('province',$province);
+			}else{
+				return view('salon.nl.nl_company_register')->with('huri',$huri)
+                ->with('contents',$data)
+                ->with('page_title',$page_title)
+                ->with('meta_title',$meta_title)
+                ->with('menuh',$menuh)
+                ->with('menuf',$menuf)
+                ->with('lang_kwords',$lang_kwords)
+                ->with('province',$province);
+
+			}
+            
         }
     }
-
-
-    public function register_nl($user_type){
-        $uri  = $_SERVER['REQUEST_URI'];
-        $qs='';
-        if(strpos($uri, '?') !== false){
-            $qs = explode('?', $uri);
-            $qs = $qs['1'];
-        }
-
-        $huri = url('nl_register').'?'.$qs;
-
-        $lang_kwords = $this->getLangKeywords();
-
-        $content = $this->get_page_content('nl','register');
-        $meta = $this->get_page_meta('nl','register');
-        $menuh = $this->get_page_menu('header','nl');
-        $menuf = $this->get_page_menu('footer','nl');
-
-        $data = array();
-        if($content && count($content)>0){
-            foreach ($content as $key => $value) {
-                // $ar = array();
-                $data[$value->section]['image'] = $value->image;
-                $data[$value->section]['content'] = $value->content_nl;
-
-                if(count($value->get_sub_content)>0){
-                    $data[$value->section]['sub_content'] = $value->get_sub_content;
-                }
-            }
-        }
-
-        $page_title = $meta_title = 'Mollure';
-        if($meta && count($meta)>0){
-            $page_title = ($meta[0]->title_en!='')?$meta[0]->title_en:'Mollure';
-            $meta_title = ($meta[0]->meta_title_en!='')?$meta[0]->meta_title_en:'';
-        }
-
-        $province = Province::where('status','active')->orderBy('name','ASC')->get();
-
-        if ($user_type == "professional"){
-            return view('salon.nl.nl_register')->with('huri',$huri)
-                ->with('contents',$data)
-                ->with('page_title',$page_title)
-                ->with('meta_title',$meta_title)
-                ->with('menuh',$menuh)
-                ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords)
-                ->with('province',$province);
-        }elseif ($user_type == "individual"){
-            return view('salon.nl.nl_individual_register')->with('huri',$huri)
-                ->with('contents',$data)
-                ->with('page_title',$page_title)
-                ->with('meta_title',$meta_title)
-                ->with('menuh',$menuh)
-                ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords)
-                ->with('province',$province);
-        }elseif ($user_type == "company"){
-            return view('salon.nl.nl_company_register')->with('huri',$huri)
-                ->with('contents',$data)
-                ->with('page_title',$page_title)
-                ->with('meta_title',$meta_title)
-                ->with('menuh',$menuh)
-                ->with('menuf',$menuf)
-                ->with('lang_kwords',$lang_kwords)
-                ->with('province',$province);
-        }
-    }
-
 
 	public function profile_save(Request $req)
 	{
@@ -6359,5 +6329,4 @@ class SalonController extends Controller
 							->with('lang_kwords',$lang_kwords);
 		}
 	}
-
 }

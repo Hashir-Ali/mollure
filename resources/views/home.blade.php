@@ -35,7 +35,7 @@
                                 <strong>For the first 50 transactions within 3 months</strong>
                             </p> -->
                             <div>
-                                <a href="{{url('professional/register')}}"><button class="my_bg_color_red banner_btn">{{$lang_kwords['sign-up-now']['english']}}</button></a>
+                                <a href="{{url('en/register')}}"><button class="my_bg_color_red banner_btn">{{$lang_kwords['sign-up-now']['english']}}</button></a>
                             </div>
                         </div>
                     </div>
