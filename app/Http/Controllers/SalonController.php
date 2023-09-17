@@ -52,35 +52,35 @@ use App\Models\MailingList;
 class SalonController extends Controller
 {
 	// utility functions almost required in every other method...
-	public function getLangKeywords(){
-		$lang_kwords = Language_keyword::all();
-			$lang_kwords_ar = array();
-			foreach ($lang_kwords as $key => $value) {
-				$lang_kwords_ar[$value->keyword]['english']=$value->english;
-				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
-			}
+	// public function getLangKeywords(){
+	// 	$lang_kwords = Language_keyword::all();
+	// 		$lang_kwords_ar = array();
+	// 		foreach ($lang_kwords as $key => $value) {
+	// 			$lang_kwords_ar[$value->keyword]['english']=$value->english;
+	// 			$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
+	// 		}
 
-			return $lang_kwords_ar;
-	}
-	public function get_user_data($user_id, Request $req){
-		$prof_id = '0';
+	// 		return $lang_kwords_ar;
+	// }
+	// public function get_user_data($user_id, Request $req){
+	// 	$prof_id = '0';
 
-		if($user_id !== ''){
-			// if coming from admin dashboard
-			$prof_id = $user_id;
-		}else{
-			// if normal user...
-			$prof_id = session('salon_id');
-		}
+	// 	if($user_id !== ''){
+	// 		// if coming from admin dashboard
+	// 		$prof_id = $user_id;
+	// 	}else{
+	// 		// if normal user...
+	// 		$prof_id = session('salon_id');
+	// 	}
 		
-		if($prof_id=='' || $prof_id=='0'){
-			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
-			return redirect('login');
-		}
+	// 	if($prof_id=='' || $prof_id=='0'){
+	// 		$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+	// 		return redirect('login');
+	// 	}
 
 
-		return Professional::find($prof_id);
-	}
+	// 	return Professional::find($prof_id);
+	// }
 
 	// utility functions end here... 
 

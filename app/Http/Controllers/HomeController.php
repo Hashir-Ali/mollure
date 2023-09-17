@@ -657,24 +657,31 @@ class HomeController extends Controller
 	}
 
 	function bookings(Request $req){
-		$user_id='1';
-		$type = isset($req->t)?$req->t:'confirm';
+		// $user_id='1';
+		$prof = $this->get_user_data(session('salon_id'), $req);
+		if($prof){
+			$type = isset($req->t)?$req->t:'confirm';
 
-		if($type=='requested'){
-			$booking = Booking::where('user_id',$user_id)->where('status','new')->get();
-		}
-		elseif($type=='complete'){
-			$booking = Booking::where('user_id',$user_id)->where('status','complete')->get();
-		}
-		else{
-			$booking = Booking::where('user_id',$user_id)->where('status','accept')->get();
-		}
-
-
-		/*print_r($booking[0]->edit_requests[0]->type);
-		die();*/
-
-		return view('bookings')->with('booking',$booking)->with('type',$type);
+			if($type=='requested'){
+				$booking = Booking::where('user_id',$prof->id)->where('status','new')->get();
+			}
+			elseif($type=='complete'){
+				$booking = Booking::where('user_id',$prof->id)->where('status','complete')->get();
+			}
+			else{
+				$booking = Booking::where('user_id',$prof->id)->where('status','accept')->get();
+			}
+			/*print_r($booking[0]->edit_requests[0]->type);
+			die();*/
+			$lang_kwords = $this->getLangKeywords();
+			
+	
+			return view('bookings')->with('prof',$prof)->with('lang_kwords',$lang_kwords)->with('booking',$booking)->with('type',$type);
+	
+		}else{
+			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login')->withErrors(['msg' => 'Something went wrong, please try again.']);
+		}	
 	}
 
 	function client_home(Request $req){
@@ -1395,23 +1402,30 @@ class HomeController extends Controller
 
 
 		$search = (isset($req->a) && $req->a=='search')?'1':'0';
-*/
+		*/
 		$p=0;
 		$ot_prof=array();
 		$cat_ar = array();
-		
 
-		$prof = Professional::where('status','approve')->get();
-		/*dd($prof);
-		return;*/
+		$prof = $this->get_user_data(session('salon_id'), $req);
+		if($prof){
+			$professionals = Professional::where('status','approve')->get();
+			/*dd($prof);
+			return;*/
+			$lang_kwords = $this->getLangKeywords();
+			
+			$categories = Category::where('status','active')->get();
 
-		$categories = Category::where('status','active')->get();
+			$municipality = Municipality::where('status','active')->orderBy('name','ASC')->get();
 
-		$municipality = Municipality::where('status','active')->orderBy('name','ASC')->get();
-
-		
-		return view('favorites')->with('categories',$categories)
-								->with('professionals',$prof);	
+			
+			return view('favorites')->with('prof',$prof)->with('lang_kwords',$lang_kwords)->with('categories',$categories)
+									->with('professionals',$professionals);	
+			
+		}else{
+			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login')->withErrors(['msg' => 'Something went wrong, please try again.']);
+		}
 		
 	}
 

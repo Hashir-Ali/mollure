@@ -1,4 +1,4 @@
-@include('_header1')
+@include('salon/header1')
 
 <?php
   use \App\Http\Controllers\BookingController;
@@ -22,323 +22,323 @@
    .sub-temp-table tr td textarea, .sub-temp-table tr td select{min-width: 100px}
 
 
-.bdr_left{border-left: 1px solid #EFEFEF;}.bdr_right{border-right: 1px solid #EFEFEF;}.bdr_bottom{border-bottom: 1px solid #EFEFEF;}.bdr_top{border-top: 1px solid #EFEFEF;}
-.border-top-left-radius{border-top-left-radius: 8px}
-.border-top-right-radius{border-top-right-radius: 8px}
-.border-bottom-left-radius{border-bottom-left-radius: 8px}
-.border-bottom-right-radius{border-bottom-right-radius: 8px}
-.top_nav_sec{
-  /*border: 1px solid #EFEFEF;*/
-  border-radius: 8px;
-}
-.top_nav{
-  width: 34%;
-  padding: 2px;
-}
-.top_nav span{
-  padding: 11px 0;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 27px;
-  color: #000000;
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-.top_nav.active span{
-  background: #21B8BF;
-  border-radius: 8px;
-  color: #fff;
-}
-.pg_ttl{
-  font-weight: 500;
-  font-size: 32px!important;
-  line-height: 43px;
-}
-.mt-40{margin-top: 40px;}
-.mt-20{margin-top: 20px;}
-.mb-20{margin-bottom: 20px;}
-.p-20{padding: 20px;}
-.f-16{font-size: 16px;}
-.f-14{font-size: 14px;}
-.f-8{font-size: 8px!important;}
-.f-10{font-size: 10px!important}
-.bg-grey{  background: #f8f8f8; }
-.flt_sec{padding: 10px;justify-content: end;align-items: center;border-radius: 8px;}
-.flt_sec .setting_span, .flt_sec .filter_span, .flt_sec .add_span, .flt_sec .action_span, .delete_span{
-  background: #FFFFFF;
-  border: 1px solid #B3B3B3;
-  border-radius: 33px;
-  color: #000000;
-  font-size: 16px;
-  line-height: 21px;
-  padding: 8px 20px;
-  display: block;
-  margin-right: 20px;
-  display: flex;
-  align-items:center;
-}
-.flt_sec .notif_span{
-  display: block;
-  color: #B3B3B3;
-}
-.swal-text,.swal-button--cancel{color:#111;text-align: center;} .swal-button--catch{background-color: #009688;}.swal-button--catch:not([disabled]):hover{    background-color: #026a61;}
+  .bdr_left{border-left: 1px solid #EFEFEF;}.bdr_right{border-right: 1px solid #EFEFEF;}.bdr_bottom{border-bottom: 1px solid #EFEFEF;}.bdr_top{border-top: 1px solid #EFEFEF;}
+  .border-top-left-radius{border-top-left-radius: 8px}
+  .border-top-right-radius{border-top-right-radius: 8px}
+  .border-bottom-left-radius{border-bottom-left-radius: 8px}
+  .border-bottom-right-radius{border-bottom-right-radius: 8px}
+  .top_nav_sec{
+    /*border: 1px solid #EFEFEF;*/
+    border-radius: 8px;
+  }
+  .top_nav{
+    width: 34%;
+    padding: 2px;
+  }
+  .top_nav span{
+    padding: 11px 0;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 27px;
+    color: #000000;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .top_nav.active span{
+    background: #21B8BF;
+    border-radius: 8px;
+    color: #fff;
+  }
+  .pg_ttl{
+    font-weight: 500;
+    font-size: 32px!important;
+    line-height: 43px;
+  }
+  .mt-40{margin-top: 40px;}
+  .mt-20{margin-top: 20px;}
+  .mb-20{margin-bottom: 20px;}
+  .p-20{padding: 20px;}
+  .f-16{font-size: 16px;}
+  .f-14{font-size: 14px;}
+  .f-8{font-size: 8px!important;}
+  .f-10{font-size: 10px!important}
+  .bg-grey{  background: #f8f8f8; }
+  .flt_sec{padding: 10px;justify-content: end;align-items: center;border-radius: 8px;}
+  .flt_sec .setting_span, .flt_sec .filter_span, .flt_sec .add_span, .flt_sec .action_span, .delete_span{
+    background: #FFFFFF;
+    border: 1px solid #B3B3B3;
+    border-radius: 33px;
+    color: #000000;
+    font-size: 16px;
+    line-height: 21px;
+    padding: 8px 20px;
+    display: block;
+    margin-right: 20px;
+    display: flex;
+    align-items:center;
+  }
+  .flt_sec .notif_span{
+    display: block;
+    color: #B3B3B3;
+  }
+  .swal-text,.swal-button--cancel{color:#111;text-align: center;} .swal-button--catch{background-color: #009688;}.swal-button--catch:not([disabled]):hover{    background-color: #026a61;}
 
-  .custom_sel{position: relative;}
-  .custom_sel ul.one_rw, .fltr_ul_sec{background: #fff;
-        position: absolute;
-        z-index: 10000;
-        width: fit-content;
-        min-width: 200px;
+    .custom_sel{position: relative;}
+    .custom_sel ul.one_rw, .fltr_ul_sec{background: #fff;
+          position: absolute;
+          z-index: 10000;
+          width: fit-content;
+          min-width: 200px;
+          list-style: none;
+          padding: 7px 20px;
+          margin-top: 10px;
+          border-radius: 8px;
+          box-shadow: 0px 0px 20px rgba(16, 8, 63, 0.09);
+          display: none;
+          font-size: 14px;
+      }
+      .custom_sel.open ul.one_rw, .custom_sel.open .fltr_ul_sec{display: block;right: 0}
+      .custom_sel ul.one_rw li{padding: 10px 2px;display: flex;justify-content: space-between;}
+      .custom_sel ul.one_rw li:not(:first-child){border-top: 1px solid #e9e9e9}
+      .custom_sel ul.one_rw li input{width: 20px;height: 20px;top: -2px;    vertical-align: middle;}
+      .custom_sel ul.one_rw li input:checked{color: red;background-color: red !important;}
+      .custom_sel_ic{cursor: pointer;}
+      .custom_sel.open .custom_sel_ic:not(.flt){
+          -webkit-transform: rotate(180deg);
+          -moz-transform: rotate(180deg);
+          -o-transform: rotate(180deg);
+          -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
+      }
+
+      .fltr_ul_sec{
+        width: 225px;
+      }
+      ul.fltr_ul{
+        float: left;
         list-style: none;
-        padding: 7px 20px;
-        margin-top: 10px;
-        border-radius: 8px;
-        box-shadow: 0px 0px 20px rgba(16, 8, 63, 0.09);
-        display: none;
+        padding: 7px 12px;
+        margin-top: 10px;  
+        width: 100%;
+      }
+      ul.fltr_ul li{
+        padding: 4px;
+        display: flex;
+        justify-content: space-between;
+      }
+      ul.fltr_ul li .custom_check{
+        margin-left: 10px
+      }
+      ul.fltr_ul li:first-child{
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 21px;
+      }
+      ul.fltr_ul li:not(:first-child){
         font-size: 14px;
-    }
-    .custom_sel.open ul.one_rw, .custom_sel.open .fltr_ul_sec{display: block;right: 0}
-    .custom_sel ul.one_rw li{padding: 10px 2px;display: flex;justify-content: space-between;}
-    .custom_sel ul.one_rw li:not(:first-child){border-top: 1px solid #e9e9e9}
-    .custom_sel ul.one_rw li input{width: 20px;height: 20px;top: -2px;    vertical-align: middle;}
-     .custom_sel ul.one_rw li input:checked{color: red;background-color: red !important;}
-    .custom_sel_ic{cursor: pointer;}
-    .custom_sel.open .custom_sel_ic:not(.flt){
-        -webkit-transform: rotate(180deg);
-        -moz-transform: rotate(180deg);
-        -o-transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-        transform: rotate(180deg);
-    }
+        line-height: 19px;    
+        text-transform: capitalize;
+        color: #323232;
+      }
 
-    .fltr_ul_sec{
-      width: 225px;
-    }
-    ul.fltr_ul{
-      float: left;
-      list-style: none;
-      padding: 7px 12px;
-      margin-top: 10px;  
-      width: 100%;
-    }
-    ul.fltr_ul li{
-      padding: 4px;
-      display: flex;
-      justify-content: space-between;
-    }
-    ul.fltr_ul li .custom_check{
-      margin-left: 10px
-    }
-    ul.fltr_ul li:first-child{
+      .custom_sel ul.fltr_ul li input{
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+      }
+      .custom_sel ul.fltr_ul li .checkmark{
+          height: 14px;
+          width: 14px;
+          background-color: #fff;
+          border: 1px solid #c3c3c3;
+          display: block;
+          border-radius: 2px;
+      }
+      /* Create the checkmark/indicator (hidden when not checked) */
+      .checkmark:after {
+        content: "";
+        /*position: absolute;*/
+        display: none;
+      }
+
+      /* Show the checkmark when checked */
+      .custom_sel ul li input:checked ~ .checkmark:after {
+        display: block;
+      }
+      .custom_sel ul.fltr_ul li .checkmark:after {
+        /*left: 9px;
+        top: 5px;*/
+          margin-left: 4px;
+          width: 4px;
+          margin-top: 1px;
+          height: 8px;
+          border: solid #66C68F;
+          border-width: 0 1px 1px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+
+      .custom_sel ul.fltr_ul li input:checked ~ .checkmark {
+          border-color: #66C68F;
+      }
+      
+      .pg_headh{
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 43px;
+      text-transform: capitalize;
+      color: #000000;
+      text-align: center;
+  }
+  .pg_headhr{
+      background: linear-gradient(90deg, #21B8BF 0%, #66C68F 100%);
+      height: 5px;
+      margin-bottom: 40px;
+  }
+  .sync_btn{
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 21px;
+      text-transform: capitalize;
+
+      color: #000000;
+      border: 1px solid #B3B3B3;
+      border-radius: 33px;
+      padding: 8px 20px;
+      background-color: #fff;
+      margin-right: 20px;
+  }
+  .booking_list_sec{
+      overflow-x: auto;
+  }
+  .booking_list_sec .list_tbl {
+      min-width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid #E4E4E4;
+      border-radius: 8px;
+      table-layout: fixed;
+  }
+  .booking_list_sec .list_tbl thead tr td {
       font-weight: 600;
       font-size: 16px;
       line-height: 21px;
-    }
-    ul.fltr_ul li:not(:first-child){
-      font-size: 14px;
-      line-height: 19px;    
-      text-transform: capitalize;
-      color: #323232;
-    }
-
-    .custom_sel ul.fltr_ul li input{
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
-    .custom_sel ul.fltr_ul li .checkmark{
-        height: 14px;
-        width: 14px;
-        background-color: #fff;
-        border: 1px solid #c3c3c3;
-        display: block;
-        border-radius: 2px;
-    }
-    /* Create the checkmark/indicator (hidden when not checked) */
-    .checkmark:after {
-      content: "";
-      /*position: absolute;*/
-      display: none;
-    }
-
-    /* Show the checkmark when checked */
-    .custom_sel ul li input:checked ~ .checkmark:after {
-      display: block;
-    }
-    .custom_sel ul.fltr_ul li .checkmark:after {
-      /*left: 9px;
-      top: 5px;*/
-        margin-left: 4px;
-        width: 4px;
-        margin-top: 1px;
-        height: 8px;
-        border: solid #66C68F;
-        border-width: 0 1px 1px 0;
-      -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-      transform: rotate(45deg);
-    }
-
-    .custom_sel ul.fltr_ul li input:checked ~ .checkmark {
-        border-color: #66C68F;
-    }
-    
-    .pg_headh{
-    font-weight: 500;
-    font-size: 32px;
-    line-height: 43px;
-    text-transform: capitalize;
-    color: #000000;
-    text-align: center;
-}
-.pg_headhr{
-    background: linear-gradient(90deg, #21B8BF 0%, #66C68F 100%);
-    height: 5px;
-    margin-bottom: 40px;
-}
-.sync_btn{
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 21px;
-    text-transform: capitalize;
-
-    color: #000000;
-    border: 1px solid #B3B3B3;
-    border-radius: 33px;
-    padding: 8px 20px;
-    background-color: #fff;
-    margin-right: 20px;
-}
-.booking_list_sec{
-    overflow-x: auto;
-}
-.booking_list_sec .list_tbl {
-    min-width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid #E4E4E4;
-    border-radius: 8px;
-    table-layout: fixed;
-}
-.booking_list_sec .list_tbl thead tr td {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 21px;
-    text-align: center;
-    text-transform: capitalize;
-    color: #000000;
-    /*min-height: 70px;*/
-    padding: 13px;
-}
-.booking_list_sec .list_tbl tbody tr td:not(.price) {
-    padding: 8px
-}
-.rej_btn {
-    background: #F16060;
-    border-radius: 2px;
-    /* width: 48px; */
-    height: 23px;
-    padding: 2px 8px;
-    color: #FFFFFF;
-    line-height: 13px;
-    font-size: 12px;
-    border: none;
-
-}
-.cus_btn {
-    background: #fff;
-    /* width: 48px; */
-    /*height: 23px;*/
-
-    padding: 8px 12px;
-    color: #000000;
-    border: 1px solid #B3B3B3;
-    border-radius: 33px;
-    line-height: 13px;
-    font-size: 13px;
-    min-width: 100px;
-  
-}
-.acc_btn {
-    background: #66C68F;
-    border-radius: 2px;
-    /* width: 48px; */
-    height: 23px;
-    padding: 2px 8px;
-    color: #FFFFFF;
-    line-height: 13px;
-    font-size: 12px;
-    border: none;
-    margin-right: 3px;
-
-}
-.mybtn{
-        background: linear-gradient(90.14deg, #66C68F 1.34%, #21B8BF 99.89%);
-        border-radius: 55px;
-        padding: 6px 12px;
-        border: 0;
-        color: #FFFFFF;
-        padding: 6px 12px;
-        font-size: 13px;
-        min-width: 100px;
-    }
-.msg_spn{
-      background: #eff9f3;
-      padding: 10px 14px;
       text-align: center;
-      border-radius: 8px;
-}
-.cancel_bk_tr td{
-    text-decoration: line-through;
-    background: #E5E5E5;
-}
-.ttl_spn_bk{
-  padding: 10px 0;
-  text-align: center;
-}
+      text-transform: capitalize;
+      color: #000000;
+      /*min-height: 70px;*/
+      padding: 13px;
+  }
+  .booking_list_sec .list_tbl tbody tr td:not(.price) {
+      padding: 8px
+  }
+  .rej_btn {
+      background: #F16060;
+      border-radius: 2px;
+      /* width: 48px; */
+      height: 23px;
+      padding: 2px 8px;
+      color: #FFFFFF;
+      line-height: 13px;
+      font-size: 12px;
+      border: none;
 
-.trash_spn, .cancel_text{
-  color: #F16060;
-}
-.btn.border-custom{
-  border:1px solid #EFEFEF;
-  border-radius: 4px;
-}
-.v-align-top{vertical-align: text-top;}
-.v-align-bottom{vertical-align: bottom;}
-.v-align-middle{vertical-align: middle;}
-.custom_btn{
-  background: #66C68F;
-border: 1px solid #66C68F;
-border-radius: 8px;
-width: 296px;
-height: 45px;
-color: #fff
-}
-.custom_btn:hover{
-  background: #66C68F;
+  }
+  .cus_btn {
+      background: #fff;
+      /* width: 48px; */
+      /*height: 23px;*/
+
+      padding: 8px 12px;
+      color: #000000;
+      border: 1px solid #B3B3B3;
+      border-radius: 33px;
+      line-height: 13px;
+      font-size: 13px;
+      min-width: 100px;
+    
+  }
+  .acc_btn {
+      background: #66C68F;
+      border-radius: 2px;
+      /* width: 48px; */
+      height: 23px;
+      padding: 2px 8px;
+      color: #FFFFFF;
+      line-height: 13px;
+      font-size: 12px;
+      border: none;
+      margin-right: 3px;
+
+  }
+  .mybtn{
+          background: linear-gradient(90.14deg, #66C68F 1.34%, #21B8BF 99.89%);
+          border-radius: 55px;
+          padding: 6px 12px;
+          border: 0;
+          color: #FFFFFF;
+          padding: 6px 12px;
+          font-size: 13px;
+          min-width: 100px;
+      }
+  .msg_spn{
+        background: #eff9f3;
+        padding: 10px 14px;
+        text-align: center;
+        border-radius: 8px;
+  }
+  .cancel_bk_tr td{
+      text-decoration: line-through;
+      background: #E5E5E5;
+  }
+  .ttl_spn_bk{
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .trash_spn, .cancel_text{
+    color: #F16060;
+  }
+  .btn.border-custom{
+    border:1px solid #EFEFEF;
+    border-radius: 4px;
+  }
+  .v-align-top{vertical-align: text-top;}
+  .v-align-bottom{vertical-align: bottom;}
+  .v-align-middle{vertical-align: middle;}
+  .custom_btn{
+    background: #66C68F;
+  border: 1px solid #66C68F;
+  border-radius: 8px;
+  width: 296px;
+  height: 45px;
   color: #fff
-}
-.text_strik{
-  text-decoration: line-through;
-}
-.req_drp{
-  border: 1px solid #B3B3B3;
-    border-radius: 33px;
-    font-size: 12px;
-}
-.req_drp .custom_sel ul{
-  right: 0;
-  left: -56px;
-  min-width: 115px;
-  
-}
-td.highlight{
-  background: #cee1ff;
-}
+  }
+  .custom_btn:hover{
+    background: #66C68F;
+    color: #fff
+  }
+  .text_strik{
+    text-decoration: line-through;
+  }
+  .req_drp{
+    border: 1px solid #B3B3B3;
+      border-radius: 33px;
+      font-size: 12px;
+  }
+  .req_drp .custom_sel ul{
+    right: 0;
+    left: -56px;
+    min-width: 115px;
+    
+  }
+  td.highlight{
+    background: #cee1ff;
+  }
 </style>
 
 <!--Tabs Start-->

@@ -81,7 +81,7 @@
 			</div>
 
 			<div>
-				<p class="text-center notaMember mt-4 text-capitalize">Not a member? <a class="mollure-text-color" href="{{url('register')}}">Register</a></p>
+				<p class="text-center notaMember mt-4 text-capitalize">Not a member? <a class="mollure-text-color" href="{{url('en/register')}}">Register</a></p>
 			</div>
 		</div>
 	</div>

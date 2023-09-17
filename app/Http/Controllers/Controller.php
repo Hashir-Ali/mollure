@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Session;
 
 use \App\Page_content;
 use \App\Page_meta;
 use \App\Menu;
 use \App\Setting;
 use \App\Language_keyword;
+use \App\Professional;
 
 class Controller extends BaseController
 {
@@ -107,4 +110,34 @@ class Controller extends BaseController
         
     }
 
+    public function getLangKeywords(){
+		$lang_kwords = Language_keyword::all();
+			$lang_kwords_ar = array();
+			foreach ($lang_kwords as $key => $value) {
+				$lang_kwords_ar[$value->keyword]['english']=$value->english;
+				$lang_kwords_ar[$value->keyword]['dutch']= ($value->dutch!='')?$value->dutch:$value->english;
+			}
+
+			return $lang_kwords_ar;
+	}
+
+    public function get_user_data($user_id, Request $req){
+		$prof_id = '0';
+
+		if($user_id !== ''){
+			// if coming from admin dashboard
+			$prof_id = $user_id;
+		}else{
+			// if normal user...
+			$prof_id = session('salon_id');
+		}
+		
+		if($prof_id=='' || $prof_id=='0'){
+			$req->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login');
+		}
+
+
+		return Professional::find($prof_id);
+	}
 }

@@ -513,9 +513,21 @@ ul.my_navbar li .dropdown-menu li a:hover {
                     <li><a href="{{route('dashboard')}}">{{$lang_kwords['dashboard_profile_menu']['english']}}</a></li>
                 @endif
                 @if($prof->user_type == "company" || $prof->user_type == "individual")
-                    <li><a href="{{route('bookings')}}">Booking</a></li>
-                    <li><a href="{{route('prof_messages')}}">Inbox</a></li>
-                    <li><a href="{{route('my_favorites')}}">Favourites</a></li>
+                    @if(Route::currentRouteName() == 'bookings')
+                        <li class="active"><a href="{{route('bookings')}}">Booking</a></li>
+                    @else
+                        <li><a href="{{route('bookings')}}">Booking</a></li>
+                    @endif
+                    @if(Route::currentRouteName() == 'prof_messages')
+                        <li class="active"><a href="{{route('prof_messages')}}">Inbox</a></li>
+                    @else
+                        <li><a href="{{route('prof_messages')}}">Inbox</a></li>
+                    @endif
+                    @if(Route::currentRouteName() == 'my_favorites')
+                        <li class="active"><a href="{{route('my_favorites')}}">Favourites</a></li>
+                    @else
+                        <li><a href="{{route('my_favorites')}}">Favourites</a></li>
+                    @endif
                 @else
                      @if(Route::currentRouteName() == 'prof_calendar')
                         <li class="active"><a href="{{route('prof_calendar')}}">Calendar</a></li>

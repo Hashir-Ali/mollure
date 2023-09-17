@@ -198,9 +198,9 @@ $ftlng = Controller::get_translation('enter-your-email');
         location.reload();
     }
 
-    const icon = document.querySelector('.bx--date-picker__icon');
-    icon.addEventListener('click', function() {
-        this.style.display = 'none';
-    });
+    // const icon = document.querySelector('.bx--date-picker__icon');
+    // icon.addEventListener('click', function() {
+    //     this.style.display = 'none';
+    // });
 </script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->

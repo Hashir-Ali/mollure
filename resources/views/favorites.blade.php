@@ -1,5 +1,5 @@
 
-    @include('_header1')
+    @include('salon/header1')
     
 
     <style>
