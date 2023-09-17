@@ -114,6 +114,7 @@ Route::group(['middleware' => ['checkSalon']], function () {
     Route::get('settings', [SalonController::class, 'prof_setting'])->name('prof_setting');
     Route::post('ajax/settings', [SalonController::class, 'ajx_prof_setting'])->name('ajx_prof_setting');
 	Route::get('client-list', [SalonController::class, 'client_list'])->name('client_list');
+	Route::get('analytics', [SalonController::class, 'analytics'])->name('analytics');
 });
 
 

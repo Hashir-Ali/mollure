@@ -4826,6 +4826,16 @@ class SalonController extends Controller
 	}
 
 
+	public function analytics(Request $request){
+		$prof = $this->get_user_data(session('salon_id'), $request);
+		$lang_kwords = $this->getLangKeywords();
+		if(!$prof){
+			$request->session()->forget(['salon_id', 'salon_name', 'salon_login', 'salon_email']);
+			return redirect('login');
+		}
+		return view('salon.analytics')->with('prof', $prof)->with('lang_kwords',$lang_kwords);
+	}
+
 	//====================================//
 	//	------ DUTCH Language start------//
 	//====================================//

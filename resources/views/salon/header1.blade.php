@@ -529,7 +529,7 @@ ul.my_navbar li .dropdown-menu li a:hover {
                         <li><a href="{{route('my_favorites')}}">Favourites</a></li>
                     @endif
                 @else
-                     @if(Route::currentRouteName() == 'prof_calendar')
+                    @if(Route::currentRouteName() == 'prof_calendar')
                         <li class="active"><a href="{{route('prof_calendar')}}">Calendar</a></li>
                     @else
                         <li><a href="{{route('prof_calendar')}}">Calendar</a></li>
@@ -546,7 +546,11 @@ ul.my_navbar li .dropdown-menu li a:hover {
                     @else
                         <li><a href="{{route('payment_setting')}}">Transactions</a></li>
                     @endif
-                    <li><a href="#">Analytics</a></li>
+                    @if(Route::currentRouteName() == 'analytics')
+                        <li class="active"><a href="{{route('analytics')}}">Analytics</a></li>
+                    @else
+                        <li><a href="#">Analytics</a></li>
+                    @endif
                 @endif
             </ul>
         </div>
